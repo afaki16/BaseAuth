@@ -1,0 +1,11 @@
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\bin\Debug\net8.0\JWTBaseAuth.Domain.deps.json
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\bin\Debug\net8.0\JWTBaseAuth.Domain.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\bin\Debug\net8.0\JWTBaseAuth.Domain.pdb
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.AssemblyInfoInputs.cache
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.AssemblyInfo.cs
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\refint\JWTBaseAuth.Domain.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\JWTBaseAuth.Domain.pdb
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Domain\obj\Debug\net8.0\ref\JWTBaseAuth.Domain.dll

@@ -1,0 +1,15 @@
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.csproj.AssemblyReference.cache
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.AssemblyInfoInputs.cache
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.AssemblyInfo.cs
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.csproj.CoreCompileInputs.cache
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\bin\Debug\net8.0\JWTBaseAuth.Application.deps.json
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\bin\Debug\net8.0\JWTBaseAuth.Application.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\bin\Debug\net8.0\JWTBaseAuth.Application.pdb
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\bin\Debug\net8.0\JWTBaseAuth.Domain.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\bin\Debug\net8.0\JWTBaseAuth.Domain.pdb
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseA.C7AA3E69.Up2Date
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\refint\JWTBaseAuth.Application.dll
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\JWTBaseAuth.Application.pdb
+C:\Users\Hp\Desktop\Projects\JWTBaseAuth\JWTBaseAuth.Application\obj\Debug\net8.0\ref\JWTBaseAuth.Application.dll

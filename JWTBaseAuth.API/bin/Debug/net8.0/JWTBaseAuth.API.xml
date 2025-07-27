@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JWTBaseAuth.API</name>
+    </assembly>
+    <members>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.AuthController.Login(JWTBaseAuth.Application.DTOs.Auth.LoginRequestDto)">
+            <summary>
+            Login with email and password
+            </summary>
+            <param name="request">Login credentials</param>
+            <returns>Access token and user information</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.AuthController.Register(JWTBaseAuth.Application.DTOs.Auth.RegisterRequestDto)">
+            <summary>
+            Register a new user account
+            </summary>
+            <param name="request">Registration information</param>
+            <returns>Created user information</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.AuthController.RefreshToken(JWTBaseAuth.Application.DTOs.Auth.RefreshTokenRequestDto)">
+            <summary>
+            Refresh access token using refresh token
+            </summary>
+            <param name="request">Token refresh information</param>
+            <returns>New access token and refresh token</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.AuthController.Logout(JWTBaseAuth.API.Controllers.V1.LogoutRequestDto)">
+            <summary>
+            Logout and revoke refresh token
+            </summary>
+            <param name="request">Logout information</param>
+            <returns>Success message</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.AuthController.GetCurrentUser">
+            <summary>
+            Get current user information
+            </summary>
+            <returns>Current user details</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.PermissionsController.GetAllPermissions">
+            <summary>
+            Get all permissions
+            </summary>
+            <returns>List of permissions</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.RolesController.GetAllRoles">
+            <summary>
+            Get all roles
+            </summary>
+            <returns>List of roles</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.RolesController.GetRoleById(System.Guid)">
+            <summary>
+            Get role by ID
+            </summary>
+            <param name="id">Role ID</param>
+            <returns>Role details</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.RolesController.CreateRole(JWTBaseAuth.Application.DTOs.CreateRoleDto)">
+            <summary>
+            Create a new role
+            </summary>
+            <param name="dto">Role creation data</param>
+            <returns>Created role</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.RolesController.UpdateRole(System.Guid,JWTBaseAuth.Application.DTOs.UpdateRoleDto)">
+            <summary>
+            Update an existing role
+            </summary>
+            <param name="id">Role ID</param>
+            <param name="dto">Role update data</param>
+            <returns>Updated role</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.RolesController.DeleteRole(System.Guid)">
+            <summary>
+            Delete a role
+            </summary>
+            <param name="id">Role ID</param>
+            <returns>Success message</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.UsersController.GetAllUsers(System.Int32,System.Int32,System.String)">
+            <summary>
+            Get all users with pagination
+            </summary>
+            <param name="page">Page number (default: 1)</param>
+            <param name="pageSize">Page size (default: 10)</param>
+            <param name="searchTerm">Search term for filtering</param>
+            <returns>List of users</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.UsersController.GetUserById(System.Guid)">
+            <summary>
+            Get user by ID
+            </summary>
+            <param name="id">User ID</param>
+            <returns>User details</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.UsersController.CreateUser(JWTBaseAuth.Application.DTOs.CreateUserDto)">
+            <summary>
+            Create a new user
+            </summary>
+            <param name="dto">User creation data</param>
+            <returns>Created user</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.UsersController.UpdateUser(System.Guid,JWTBaseAuth.Application.DTOs.UpdateUserDto)">
+            <summary>
+            Update an existing user
+            </summary>
+            <param name="id">User ID</param>
+            <param name="dto">User update data</param>
+            <returns>Updated user</returns>
+        </member>
+        <member name="M:JWTBaseAuth.API.Controllers.V1.UsersController.DeleteUser(System.Guid)">
+            <summary>
+            Delete a user (soft delete)
+            </summary>
+            <param name="id">User ID</param>
+            <returns>Success message</returns>
+        </member>
+    </members>
+</doc>
