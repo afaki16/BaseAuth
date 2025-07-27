@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/JWTBaseAuth.API/Program.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/JWTBaseAuth.API/Program.cs" />
+              <option name="originalContent" value="using JWTBaseAuth.Infrastructure.Extensions;&#10;&#10;var builder = WebApplication.CreateBuilder(args);&#10;&#10;// Add services to the container.&#10;builder.Services.AddControllers();&#10;&#10;// Add Infrastructure services (bu sat�r� ekle)&#10;builder.Services.AddInfrastructure(builder.Configuration);&#10;&#10;// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle&#10;builder.Services.AddEndpointsApiExplorer();&#10;builder.Services.AddSwaggerGen();&#10;&#10;var app = builder.Build();&#10;&#10;// Configure the HTTP request pipeline.&#10;if (app.Environment.IsDevelopment())&#10;{&#10;    app.UseSwagger();&#10;    app.UseSwaggerUI();&#10;}&#10;&#10;app.UseHttpsRedirection();&#10;&#10;// Authentication ve Authorization'� ekle (s�ralama �nemli)&#10;app.UseAuthentication();  // Bu sat�r� ekle&#10;app.UseAuthorization();&#10;&#10;app.MapControllers();&#10;&#10;app.Run();&#10;" />
+              <option name="updatedContent" value="using JWTBaseAuth.Infrastructure.Extensions;&#10;&#10;var builder = WebApplication.CreateBuilder(args);&#10;&#10;// Add services to the container.&#10;builder.Services.AddControllers();&#10;&#10;// Add HttpContextAccessor&#10;builder.Services.AddHttpContextAccessor();&#10;&#10;// Add Infrastructure services&#10;builder.Services.AddInfrastructure(builder.Configuration);&#10;&#10;// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle&#10;builder.Services.AddEndpointsApiExplorer();&#10;builder.Services.AddSwaggerGen();&#10;&#10;var app = builder.Build();&#10;&#10;// Configure the HTTP request pipeline.&#10;if (app.Environment.IsDevelopment())&#10;{&#10;    app.UseSwagger();&#10;    app.UseSwaggerUI();&#10;}&#10;&#10;app.UseHttpsRedirection();&#10;&#10;// Authentication and Authorization (order is important)&#10;app.UseAuthentication();&#10;app.UseAuthorization();&#10;&#10;app.MapControllers();&#10;&#10;app.Run();" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/JWTBaseAuth.API/appsettings.json">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/JWTBaseAuth.API/appsettings.json" />
+              <option name="originalContent" value="{&#10;  &quot;ConnectionStrings&quot;: {&#10;    &quot;DefaultConnection&quot;: &quot;Host=localhost;Port=5432;Database=BaseAuth;Username=postgres;Password=postgres;Trust Server Certificate=true&quot;&#10;  },&#10; &quot;Logging&quot;: {&#10;  &quot;LogLevel&quot;: {&#10;    &quot;Default&quot;: &quot;Information&quot;,&#10;    &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;&#10;  }&#10;}, &quot;AllowedHosts&quot;: &quot;*&quot; }&#10;" />
+              <option name="updatedContent" value="{&#10;  &quot;ConnectionStrings&quot;: {&#10;    &quot;DefaultConnection&quot;: &quot;Host=localhost;Port=5432;Database=BaseAuth;Username=postgres;Password=postgres;Trust Server Certificate=true&quot;&#10;  },&#10;  &quot;JwtSettings&quot;: {&#10;    &quot;SecretKey&quot;: &quot;your-super-secret-key-with-at-least-32-characters&quot;,&#10;    &quot;Issuer&quot;: &quot;JWTBaseAuth&quot;,&#10;    &quot;Audience&quot;: &quot;JWTBaseAuthClients&quot;,&#10;    &quot;AccessTokenExpirationMinutes&quot;: 60,&#10;    &quot;RefreshTokenExpirationDays&quot;: 7&#10;  },&#10;  &quot;Logging&quot;: {&#10;    &quot;LogLevel&quot;: {&#10;      &quot;Default&quot;: &quot;Information&quot;,&#10;      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;&#10;    }&#10;  },&#10;  &quot;AllowedHosts&quot;: &quot;*&quot;&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/JWTBaseAuth.Infrastructure/Data/ApplicationDbContextFactory.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/JWTBaseAuth.Infrastructure/Data/ApplicationDbContextFactory.cs" />
+              <option name="updatedContent" value="using Microsoft.EntityFrameworkCore;&#10;using Microsoft.EntityFrameworkCore.Design;&#10;using Microsoft.Extensions.Configuration;&#10;using System.IO;&#10;&#10;namespace JWTBaseAuth.Infrastructure.Data&#10;{&#10;    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory&lt;ApplicationDbContext&gt;&#10;    {&#10;        public ApplicationDbContext CreateDbContext(string[] args)&#10;        {&#10;            // Build configuration from appsettings.json&#10;            IConfigurationRoot configuration = new ConfigurationBuilder()&#10;                .SetBasePath(Directory.GetCurrentDirectory())&#10;                .AddJsonFile(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, &quot;JWTBaseAuth.API&quot;, &quot;appsettings.json&quot;))&#10;                .Build();&#10;&#10;            // Get the connection string&#10;            var connectionString = configuration.GetConnectionString(&quot;DefaultConnection&quot;);&#10;&#10;            // Configure DbContext options&#10;            var optionsBuilder = new DbContextOptionsBuilder&lt;ApplicationDbContext&gt;();&#10;            optionsBuilder.UseNpgsql(connectionString);&#10;&#10;            // Create and return the DbContext instance&#10;            return new ApplicationDbContext(optionsBuilder.Options);&#10;        }&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

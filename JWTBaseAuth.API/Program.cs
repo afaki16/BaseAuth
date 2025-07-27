@@ -5,7 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Add Infrastructure services (bu satýrý ekle)
+// Add HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
+// Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,8 +26,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Authentication ve Authorization'ý ekle (sýralama önemli)
-app.UseAuthentication();  // Bu satýrý ekle
+// Authentication and Authorization (order is important)
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
