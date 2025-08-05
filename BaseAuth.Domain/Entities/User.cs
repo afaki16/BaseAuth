@@ -16,7 +16,7 @@ namespace BaseAuth.Domain.Entities
         public DateTime? LastLoginDate { get; set; }
         public bool EmailConfirmed { get; set; }
         public bool PhoneConfirmed { get; set; }
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl { get; set; } = string.Empty;
 
         // Navigation properties
         public ICollection<UserRole> UserRoles { get; set; }
