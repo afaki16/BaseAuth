@@ -41,5 +41,38 @@ namespace BaseAuth.Infrastructure.Repositories
         {
             return await _dbSet.AnyAsync(r => r.Name == name);
         }
+
+        public async Task<bool> RoleHasPermissionAsync(Guid roleId, string permission)
+        {
+            return await _context.RolePermissions
+                .Include(rp => rp.Role)
+                .Include(rp => rp.Permission)
+                .AnyAsync(rp => rp.RoleId == roleId && rp.Permission.Name == permission);
+        }
+
+        public async Task<IEnumerable<string>> GetRolePermissionsAsync(Guid roleId)
+        {
+            return await _context.RolePermissions
+                .Include(rp => rp.Permission)
+                .Where(rp => rp.RoleId == roleId)
+                .Select(rp => rp.Permission.Name)
+                .ToListAsync();
+        }
+
+        public async Task<RolePermission> GetRolePermissionAsync(Guid roleId, Guid permissionId)
+        {
+            return await _context.RolePermissions
+                .FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);
+        }
+
+        public async Task AddRolePermissionAsync(RolePermission rolePermission)
+        {
+            await _context.RolePermissions.AddAsync(rolePermission);
+        }
+
+        public void RemoveRolePermission(RolePermission rolePermission)
+        {
+            _context.RolePermissions.Remove(rolePermission);
+        }
     }
 } 

@@ -11,5 +11,8 @@ namespace BaseAuth.Application.Interfaces
         Task<User> GetUserWithPermissionsAsync(Guid userId);
         Task<bool> EmailExistsAsync(string email);
         Task<bool> PhoneExistsAsync(string phoneNumber);
+        Task<UserRole> GetUserRoleAsync(Guid userId, Guid roleId);
+        Task AddUserRoleAsync(UserRole userRole);
+        void RemoveUserRole(UserRole userRole);
     }
 } 

@@ -35,6 +35,11 @@ namespace BaseAuth.Infrastructure.Extensions
             services.AddScoped<IAuthService, JwtService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            
+            // Add Application Services
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPermissionService, PermissionService>();
 
             // Add JWT Authentication
             AddJwtAuthentication(services, configuration);

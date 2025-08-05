@@ -1,4 +1,5 @@
 using BaseAuth.Infrastructure.Extensions;
+using BaseAuth.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,9 @@ builder.Services.AddControllers();
 
 // Add HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
+
+// Add Application services (MediatR, AutoMapper, FluentValidation)
+builder.Services.AddApplication();
 
 // Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);

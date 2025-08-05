@@ -45,5 +45,21 @@ namespace BaseAuth.Infrastructure.Repositories
         {
             return await _dbSet.AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
+
+        public async Task<UserRole> GetUserRoleAsync(Guid userId, Guid roleId)
+        {
+            return await _context.UserRoles
+                .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);
+        }
+
+        public async Task AddUserRoleAsync(UserRole userRole)
+        {
+            await _context.UserRoles.AddAsync(userRole);
+        }
+
+        public void RemoveUserRole(UserRole userRole)
+        {
+            _context.UserRoles.Remove(userRole);
+        }
     }
 } 
