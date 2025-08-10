@@ -42,23 +42,33 @@ namespace BaseAuth.Application.Features.Users.Handlers
             user.Status = request.Status;
             user.ProfileImageUrl = request.ProfileImageUrl;
 
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
             // Clear existing roles
-            user.UserRoles.Clear();
+            var existingUserRoles = await _unitOfWork.Users.FindAsync(u => u.Id == request.Id);
+            var userWithRoles = existingUserRoles.FirstOrDefault();
+            if (userWithRoles != null)
+            {
+                foreach (var userRole in userWithRoles.UserRoles.ToList())
+                {
+                    _unitOfWork.Users.RemoveUserRole(userRole);
+                }
+            }
 
             // Add new roles if provided
             if (request.RoleIds?.Any() == true)
             {
                 foreach (var roleId in request.RoleIds)
                 {
-                    user.UserRoles.Add(new UserRole
+                    var userRole = new UserRole
                     {
                         UserId = user.Id,
                         RoleId = roleId
-                    });
+                    };
+                    await _unitOfWork.Users.AddUserRoleAsync(userRole);
                 }
             }
-
-            _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
             var userDto = _mapper.Map<UserDto>(user);

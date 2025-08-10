@@ -40,13 +40,13 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <param name="id">Role ID</param>
         /// <returns>Role details</returns>
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:int}")]
         [Authorize(Policy = "RequireRolesReadPermission")]
         [ProducesResponseType(typeof(RoleDto), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetRoleById(Guid id)
+        public async Task<IActionResult> GetRoleById(int id)
         {
             var query = new GetRoleByIdQuery { Id = id };
             var result = await _mediator.Send(query);
@@ -87,14 +87,14 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">Role ID</param>
         /// <param name="dto">Role update data</param>
         /// <returns>Updated role</returns>
-        [HttpPut("{id:guid}")]
+        [HttpPut("{id:int}")]
         [Authorize(Policy = "RequireRolesUpdatePermission")]
         [ProducesResponseType(typeof(RoleDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateRole(Guid id, [FromBody] UpdateRoleDto dto)
+        public async Task<IActionResult> UpdateRole(int id, [FromBody] UpdateRoleDto dto)
         {
             var command = new UpdateRoleCommand
             {
@@ -113,14 +113,14 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <param name="id">Role ID</param>
         /// <returns>Success message</returns>
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Policy = "RequireRolesDeletePermission")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteRole(Guid id)
+        public async Task<IActionResult> DeleteRole(int id)
         {
             var command = new DeleteRoleCommand { Id = id };
             var result = await _mediator.Send(command);

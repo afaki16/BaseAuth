@@ -20,7 +20,7 @@ namespace BaseAuth.Infrastructure.Repositories
             return await _dbSet.FirstOrDefaultAsync(p => p.Name == name);
         }
 
-        public async Task<IEnumerable<Permission>> GetPermissionsByRoleIdAsync(Guid roleId)
+        public async Task<IEnumerable<Permission>> GetPermissionsByRoleIdAsync(int roleId)
         {
             return await _context.RolePermissions
                 .Where(rp => rp.RoleId == roleId)
@@ -29,7 +29,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Permission>> GetPermissionsByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<Permission>> GetPermissionsByUserIdAsync(int userId)
         {
             return await _context.UserRoles
                 .Where(ur => ur.UserId == userId)

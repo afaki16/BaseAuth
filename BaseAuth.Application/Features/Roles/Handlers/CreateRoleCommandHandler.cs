@@ -36,21 +36,23 @@ namespace BaseAuth.Application.Features.Roles.Handlers
                 IsSystemRole = false
             };
 
+            await _unitOfWork.Roles.AddAsync(role);
+            await _unitOfWork.SaveChangesAsync();
+
             // Assign permissions to role if provided
             if (request.PermissionIds?.Any() == true)
             {
                 foreach (var permissionId in request.PermissionIds)
                 {
-                    role.RolePermissions.Add(new RolePermission
+                    var rolePermission = new RolePermission
                     {
                         RoleId = role.Id,
                         PermissionId = permissionId
-                    });
+                    };
+                    await _unitOfWork.Roles.AddRolePermissionAsync(rolePermission);
                 }
+                await _unitOfWork.SaveChangesAsync();
             }
-
-            await _unitOfWork.Roles.AddAsync(role);
-            await _unitOfWork.SaveChangesAsync();
 
             var roleDto = _mapper.Map<RoleDto>(role);
             return Result.Success(roleDto);

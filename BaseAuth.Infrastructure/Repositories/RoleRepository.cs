@@ -20,7 +20,7 @@ namespace BaseAuth.Infrastructure.Repositories
             return await _dbSet.FirstOrDefaultAsync(r => r.Name == name);
         }
 
-        public async Task<Role> GetRoleWithPermissionsAsync(Guid roleId)
+        public async Task<Role> GetRoleWithPermissionsAsync(int roleId)
         {
             return await _dbSet
                 .Include(r => r.RolePermissions)
@@ -28,7 +28,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .FirstOrDefaultAsync(r => r.Id == roleId);
         }
 
-        public async Task<IEnumerable<Role>> GetRolesByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<Role>> GetRolesByUserIdAsync(int userId)
         {
             return await _context.UserRoles
                 .Where(ur => ur.UserId == userId)
@@ -42,7 +42,7 @@ namespace BaseAuth.Infrastructure.Repositories
             return await _dbSet.AnyAsync(r => r.Name == name);
         }
 
-        public async Task<bool> RoleHasPermissionAsync(Guid roleId, string permission)
+        public async Task<bool> RoleHasPermissionAsync(int roleId, string permission)
         {
             return await _context.RolePermissions
                 .Include(rp => rp.Role)
@@ -50,7 +50,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .AnyAsync(rp => rp.RoleId == roleId && rp.Permission.Name == permission);
         }
 
-        public async Task<IEnumerable<string>> GetRolePermissionsAsync(Guid roleId)
+        public async Task<IEnumerable<string>> GetRolePermissionsAsync(int roleId)
         {
             return await _context.RolePermissions
                 .Include(rp => rp.Permission)
@@ -59,7 +59,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<RolePermission> GetRolePermissionAsync(Guid roleId, Guid permissionId)
+        public async Task<RolePermission> GetRolePermissionAsync(int roleId, int permissionId)
         {
             return await _context.RolePermissions
                 .FirstOrDefaultAsync(rp => rp.RoleId == roleId && rp.PermissionId == permissionId);

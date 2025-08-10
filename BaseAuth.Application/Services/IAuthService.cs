@@ -15,7 +15,7 @@ namespace BaseAuth.Application.Services
         Task<Result<RefreshToken>> GenerateRefreshTokenAsync(User user, string ipAddress, string userAgent);
         Task<Result<LoginResponseDto>> RefreshTokenAsync(string accessToken, string refreshToken, string ipAddress, string userAgent);
         Task<Result> RevokeTokenAsync(string refreshToken);
-        Task<Result> RevokeAllUserTokensAsync(Guid userId);
+        Task<Result> RevokeAllUserTokensAsync(int userId);
         ClaimsPrincipal GetClaimsFromExpiredToken(string token);
         Task<bool> ValidateTokenAsync(string token);
     }

@@ -4,7 +4,7 @@ namespace BaseAuth.Application.Services
 {
     public interface ICurrentUserService
     {
-        Guid? UserId { get; }
+        int? UserId { get; }
         string Email { get; }
         string FullName { get; }
         bool IsAuthenticated { get; }

@@ -26,7 +26,7 @@ namespace BaseAuth.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<Result<UserDto>> GetUserByIdAsync(Guid id)
+        public async Task<Result<UserDto>> GetUserByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetUserWithRolesAsync(id);
             if (user == null)
@@ -112,7 +112,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(userDto);
         }
 
-        public async Task<Result> DeleteUserAsync(Guid id)
+        public async Task<Result> DeleteUserAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
@@ -124,7 +124,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success();
         }
 
-        public async Task<Result> ChangeUserStatusAsync(Guid id, UserStatus status)
+        public async Task<Result> ChangeUserStatusAsync(int id, UserStatus status)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
@@ -137,7 +137,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success();
         }
 
-        public async Task<Result> ResetPasswordAsync(Guid id, string newPassword)
+        public async Task<Result> ResetPasswordAsync(int id, string newPassword)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)

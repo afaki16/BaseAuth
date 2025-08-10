@@ -18,7 +18,7 @@ namespace BaseAuth.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<bool>> UserHasPermissionAsync(Guid userId, string permission)
+        public async Task<Result<bool>> UserHasPermissionAsync(int userId, string permission)
         {
             var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
             if (user == null)
@@ -31,7 +31,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(hasPermission);
         }
 
-        public async Task<Result<bool>> UserHasPermissionAsync(Guid userId, string resource, string action)
+        public async Task<Result<bool>> UserHasPermissionAsync(int userId, string resource, string action)
         {
             var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
             if (user == null)
@@ -45,7 +45,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(hasPermission);
         }
 
-        public async Task<Result<IEnumerable<string>>> GetUserPermissionsAsync(Guid userId)
+        public async Task<Result<IEnumerable<string>>> GetUserPermissionsAsync(int userId)
         {
             var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
             if (user == null)
@@ -60,7 +60,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success<IEnumerable<string>>(permissions);
         }
 
-        public async Task<Result<bool>> RoleHasPermissionAsync(Guid roleId, string permission)
+        public async Task<Result<bool>> RoleHasPermissionAsync(int roleId, string permission)
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(roleId);
             if (role == null)
@@ -70,7 +70,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(hasPermission);
         }
 
-        public async Task<Result<IEnumerable<string>>> GetRolePermissionsAsync(Guid roleId)
+        public async Task<Result<IEnumerable<string>>> GetRolePermissionsAsync(int roleId)
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(roleId);
             if (role == null)
@@ -80,7 +80,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success<IEnumerable<string>>(permissions);
         }
 
-        public async Task<Result> AssignPermissionToRoleAsync(Guid roleId, Guid permissionId)
+        public async Task<Result> AssignPermissionToRoleAsync(int roleId, int permissionId)
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(roleId);
             if (role == null)
@@ -106,7 +106,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success();
         }
 
-        public async Task<Result> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId)
+        public async Task<Result> RemovePermissionFromRoleAsync(int roleId, int permissionId)
         {
             var rolePermission = await _unitOfWork.Roles.GetRolePermissionAsync(roleId, permissionId);
             if (rolePermission == null)
@@ -118,7 +118,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success();
         }
 
-        public async Task<Result> AssignRoleToUserAsync(Guid userId, Guid roleId)
+        public async Task<Result> AssignRoleToUserAsync(int userId, int roleId)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
             if (user == null)
@@ -144,7 +144,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success();
         }
 
-        public async Task<Result> RemoveRoleFromUserAsync(Guid userId, Guid roleId)
+        public async Task<Result> RemoveRoleFromUserAsync(int userId, int roleId)
         {
             var userRole = await _unitOfWork.Users.GetUserRoleAsync(userId, roleId);
             if (userRole == null)
@@ -154,6 +154,7 @@ namespace BaseAuth.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success();
+
         }
     }
 } 

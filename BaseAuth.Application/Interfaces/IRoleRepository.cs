@@ -8,12 +8,12 @@ namespace BaseAuth.Application.Interfaces
     public interface IRoleRepository : IBaseRepository<Role>
     {
         Task<Role> GetByNameAsync(string name);
-        Task<Role> GetRoleWithPermissionsAsync(Guid roleId);
-        Task<IEnumerable<Role>> GetRolesByUserIdAsync(Guid userId);
+        Task<Role> GetRoleWithPermissionsAsync(int roleId);
+        Task<IEnumerable<Role>> GetRolesByUserIdAsync(int userId);
         Task<bool> RoleExistsAsync(string name);
-        Task<bool> RoleHasPermissionAsync(Guid roleId, string permission);
-        Task<IEnumerable<string>> GetRolePermissionsAsync(Guid roleId);
-        Task<RolePermission> GetRolePermissionAsync(Guid roleId, Guid permissionId);
+        Task<bool> RoleHasPermissionAsync(int roleId, string permission);
+        Task<IEnumerable<string>> GetRolePermissionsAsync(int roleId);
+        Task<RolePermission> GetRolePermissionAsync(int roleId, int permissionId);
         Task AddRolePermissionAsync(RolePermission rolePermission);
         void RemoveRolePermission(RolePermission rolePermission);
     }

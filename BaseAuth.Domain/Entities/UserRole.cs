@@ -5,8 +5,8 @@ namespace BaseAuth.Domain.Entities
 {
     public class UserRole : BaseEntity
     {
-        public Guid UserId { get; set; }
-        public Guid RoleId { get; set; }
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
 
         // Navigation properties
         public User User { get; set; }

@@ -15,12 +15,12 @@ namespace BaseAuth.Infrastructure.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid? UserId
+        public int? UserId
         {
             get
             {
                 var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                return Guid.TryParse(userIdClaim, out var userId) ? userId : null;
+                return int.TryParse(userIdClaim, out var userId) ? userId : null;
             }
         }
 

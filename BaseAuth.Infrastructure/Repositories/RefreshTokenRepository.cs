@@ -21,7 +21,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .FirstOrDefaultAsync(rt => rt.Token == token);
         }
 
-        public async Task<RefreshToken> GetActiveTokenByUserIdAsync(Guid userId)
+        public async Task<RefreshToken> GetActiveTokenByUserIdAsync(int userId)
         {
             return await _dbSet
                 .Where(rt => rt.UserId == userId && !rt.IsRevoked && rt.ExpiryDate > DateTime.UtcNow)
@@ -29,7 +29,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task RevokeAllUserTokensAsync(Guid userId)
+        public async Task RevokeAllUserTokensAsync(int userId)
         {
             var tokens = await _dbSet
                 .Where(rt => rt.UserId == userId && !rt.IsRevoked)

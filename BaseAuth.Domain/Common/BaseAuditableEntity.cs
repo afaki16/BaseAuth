@@ -4,7 +4,7 @@ namespace BaseAuth.Domain.Common
 {
     public abstract class BaseAuditableEntity : BaseEntity
     {
-        public Guid? CreatedBy { get; set; }
-        public Guid? UpdatedBy { get; set; }
+        public int? CreatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
     }
 } 

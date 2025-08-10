@@ -20,12 +20,12 @@ namespace BaseAuth.Infrastructure.Repositories
             _dbSet = context.Set<T>();
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 
@@ -34,7 +34,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 query = query.Include(include);
             }
 
-            return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()

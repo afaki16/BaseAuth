@@ -34,7 +34,7 @@ namespace BaseAuth.Infrastructure.Services
             try
             {
                 var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(
-                    (await _unitOfWork.Users.FindFirstAsync(u => u.Email == email))?.Id ?? Guid.Empty);
+                    (await _unitOfWork.Users.FindFirstAsync(u => u.Email == email))?.Id ?? 0);
 
                 if (user == null)
                     return Result.Failure<LoginResponseDto>("Invalid email or password");
@@ -200,7 +200,7 @@ namespace BaseAuth.Infrastructure.Services
                     return Result.Failure<LoginResponseDto>("Invalid access token");
 
                 var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (!Guid.TryParse(userIdClaim, out var userId))
+                if (!int.TryParse(userIdClaim, out var userId))
                     return Result.Failure<LoginResponseDto>("Invalid user ID in token");
 
                 var storedRefreshToken = await _unitOfWork.RefreshTokens.GetByTokenAsync(refreshToken);
@@ -270,7 +270,7 @@ namespace BaseAuth.Infrastructure.Services
             }
         }
 
-        public async Task<Result> RevokeAllUserTokensAsync(Guid userId)
+        public async Task<Result> RevokeAllUserTokensAsync(int userId)
         {
             try
             {

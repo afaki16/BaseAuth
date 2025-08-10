@@ -50,14 +50,14 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <param name="id">User ID</param>
         /// <returns>User details</returns>
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:int}")]
         [Authorize(Policy = "RequireUsersReadPermission")]
         [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetUserById(Guid id)
+        public async Task<IActionResult> GetUserById(int id)
         {
             var query = new GetUserByIdQuery { Id = id };
             var result = await _mediator.Send(query);
@@ -102,14 +102,14 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">User ID</param>
         /// <param name="dto">User update data</param>
         /// <returns>Updated user</returns>
-        [HttpPut("{id:guid}")]
+        [HttpPut("{id:int}")]
         [Authorize(Policy = "RequireUsersUpdatePermission")]
         [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto dto)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto dto)
         {
             var command = new UpdateUserCommand
             {
@@ -132,14 +132,14 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <param name="id">User ID</param>
         /// <returns>Success message</returns>
-        [HttpDelete("{id:guid}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Policy = "RequireUsersDeletePermission")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             var command = new DeleteUserCommand { Id = id };
             var result = await _mediator.Send(command);

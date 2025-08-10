@@ -7,6 +7,6 @@ namespace BaseAuth.Application.Features.Roles.Queries
 {
     public class GetRoleByIdQuery : IRequest<Result<RoleDto>>
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 } 

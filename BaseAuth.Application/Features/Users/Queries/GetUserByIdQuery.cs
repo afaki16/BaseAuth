@@ -7,6 +7,6 @@ namespace BaseAuth.Application.Features.Users.Queries
 {
     public class GetUserByIdQuery : IRequest<Result<UserDto>>
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 } 

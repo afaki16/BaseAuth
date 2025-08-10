@@ -7,6 +7,6 @@ namespace BaseAuth.Application.DTOs
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Guid> PermissionIds { get; set; } = new List<Guid>();
+        public List<int> PermissionIds { get; set; } = new List<int>();
     }
 } 

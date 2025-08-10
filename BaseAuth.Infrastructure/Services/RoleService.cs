@@ -22,7 +22,7 @@ namespace BaseAuth.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<Result<RoleDto>> GetRoleByIdAsync(Guid id)
+        public async Task<Result<RoleDto>> GetRoleByIdAsync(int id)
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(id);
             if (role == null)
@@ -49,7 +49,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(roleDtos);
         }
 
-        public async Task<Result<IEnumerable<RoleDto>>> GetRolesByUserIdAsync(Guid userId)
+        public async Task<Result<IEnumerable<RoleDto>>> GetRolesByUserIdAsync(int userId)
         {
             var user = await _unitOfWork.Users.GetUserWithRolesAsync(userId);
             if (user == null)
@@ -98,7 +98,7 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(roleDto);
         }
 
-        public async Task<Result> DeleteRoleAsync(Guid id)
+        public async Task<Result> DeleteRoleAsync(int id)
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(id);
             if (role == null)

@@ -40,23 +40,33 @@ namespace BaseAuth.Application.Features.Roles.Handlers
             role.Name = request.Name;
             role.Description = request.Description;
 
+            _unitOfWork.Roles.Update(role);
+            await _unitOfWork.SaveChangesAsync();
+
             // Clear existing permissions
-            role.RolePermissions.Clear();
+            var existingRolePermissions = await _unitOfWork.Roles.FindAsync(r => r.Id == request.Id);
+            var roleWithPermissions = existingRolePermissions.FirstOrDefault();
+            if (roleWithPermissions != null)
+            {
+                foreach (var rolePermission in roleWithPermissions.RolePermissions.ToList())
+                {
+                    _unitOfWork.Roles.RemoveRolePermission(rolePermission);
+                }
+            }
 
             // Add new permissions if provided
             if (request.PermissionIds?.Any() == true)
             {
                 foreach (var permissionId in request.PermissionIds)
                 {
-                    role.RolePermissions.Add(new RolePermission
+                    var rolePermission = new RolePermission
                     {
                         RoleId = role.Id,
                         PermissionId = permissionId
-                    });
+                    };
+                    await _unitOfWork.Roles.AddRolePermissionAsync(rolePermission);
                 }
             }
-
-            _unitOfWork.Roles.Update(role);
             await _unitOfWork.SaveChangesAsync();
 
             var roleDto = _mapper.Map<Application.DTOs.RoleDto>(role);

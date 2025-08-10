@@ -18,7 +18,7 @@ namespace BaseAuth.Infrastructure.Repositories
             return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User> GetUserWithRolesAsync(Guid userId)
+        public async Task<User> GetUserWithRolesAsync(int userId)
         {
             return await _dbSet
                 .Include(u => u.UserRoles)
@@ -26,7 +26,7 @@ namespace BaseAuth.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public async Task<User> GetUserWithPermissionsAsync(Guid userId)
+        public async Task<User> GetUserWithPermissionsAsync(int userId)
         {
             return await _dbSet
                 .Include(u => u.UserRoles)
@@ -46,7 +46,7 @@ namespace BaseAuth.Infrastructure.Repositories
             return await _dbSet.AnyAsync(u => u.PhoneNumber == phoneNumber);
         }
 
-        public async Task<UserRole> GetUserRoleAsync(Guid userId, Guid roleId)
+        public async Task<UserRole> GetUserRoleAsync(int userId, int roleId)
         {
             return await _context.UserRoles
                 .FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId);

@@ -7,14 +7,14 @@ namespace BaseAuth.Application.Services
 {
     public interface IPermissionService
     {
-        Task<Result<bool>> UserHasPermissionAsync(Guid userId, string permission);
-        Task<Result<bool>> UserHasPermissionAsync(Guid userId, string resource, string action);
-        Task<Result<IEnumerable<string>>> GetUserPermissionsAsync(Guid userId);
-        Task<Result<bool>> RoleHasPermissionAsync(Guid roleId, string permission);
-        Task<Result<IEnumerable<string>>> GetRolePermissionsAsync(Guid roleId);
-        Task<Result> AssignPermissionToRoleAsync(Guid roleId, Guid permissionId);
-        Task<Result> RemovePermissionFromRoleAsync(Guid roleId, Guid permissionId);
-        Task<Result> AssignRoleToUserAsync(Guid userId, Guid roleId);
-        Task<Result> RemoveRoleFromUserAsync(Guid userId, Guid roleId);
+        Task<Result<bool>> UserHasPermissionAsync(int userId, string permission);
+        Task<Result<bool>> UserHasPermissionAsync(int userId, string resource, string action);
+        Task<Result<IEnumerable<string>>> GetUserPermissionsAsync(int userId);
+        Task<Result<bool>> RoleHasPermissionAsync(int roleId, string permission);
+        Task<Result<IEnumerable<string>>> GetRolePermissionsAsync(int roleId);
+        Task<Result> AssignPermissionToRoleAsync(int roleId, int permissionId);
+        Task<Result> RemovePermissionFromRoleAsync(int roleId, int permissionId);
+        Task<Result> AssignRoleToUserAsync(int userId, int roleId);
+        Task<Result> RemoveRoleFromUserAsync(int userId, int roleId);
     }
 } 

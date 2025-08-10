@@ -129,10 +129,10 @@ namespace BaseAuth.API.Controllers.V1
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             
-            if (!Guid.TryParse(userId, out var userGuid))
+            if (!int.TryParse(userId, out var userIdInt))
                 return Unauthorized();
 
-            var query = new Application.Features.Users.Queries.GetUserByIdQuery { Id = userGuid };
+            var query = new Application.Features.Users.Queries.GetUserByIdQuery { Id = userIdInt };
             var result = await _mediator.Send(query);
             
             return HandleResult(result);

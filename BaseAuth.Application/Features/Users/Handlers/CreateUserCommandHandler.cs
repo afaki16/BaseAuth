@@ -47,21 +47,23 @@ namespace BaseAuth.Application.Features.Users.Handlers
                 EmailConfirmed = false
             };
 
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.SaveChangesAsync();
+
             // Assign roles if provided
             if (request.RoleIds?.Any() == true)
             {
                 foreach (var roleId in request.RoleIds)
                 {
-                    user.UserRoles.Add(new UserRole
+                    var userRole = new UserRole
                     {
                         UserId = user.Id,
                         RoleId = roleId
-                    });
+                    };
+                    await _unitOfWork.Users.AddUserRoleAsync(userRole);
                 }
+                await _unitOfWork.SaveChangesAsync();
             }
-
-            await _unitOfWork.Users.AddAsync(user);
-            await _unitOfWork.SaveChangesAsync();
 
             var userDto = _mapper.Map<Application.DTOs.UserDto>(user);
             return Result.Success(userDto);

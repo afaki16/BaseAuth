@@ -65,4 +65,13 @@ Content-Type: application/json
 
 ## Seed Data
 
-Admin kullanıcısı ve ilgili veriler `SeedData.cs` dosyasında tanımlanmıştır ve uygulama başlatıldığında otomatik olarak çalıştırılır. 
+Admin kullanıcısı ve ilgili veriler `SeedData.cs` dosyasında tanımlanmıştır ve uygulama başlatıldığında otomatik olarak çalıştırılır.
+
+## Değişiklikler
+
+**GUID'den INT'e Geçiş:**
+- Tüm entity'lerde ID alanları GUID'den INT'e çevrildi
+- Foreign key'ler INT olarak güncellendi
+- Repository'ler ve service'ler INT ID'leri kullanacak şekilde güncellendi
+- DTO'lar ve Command/Query'ler INT ID'leri kullanacak şekilde güncellendi
+- JWT token'larda user ID'ler INT olarak saklanıyor 
