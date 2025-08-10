@@ -1,5 +1,7 @@
 using BaseAuth.Infrastructure.Extensions;
+using BaseAuth.Infrastructure.Data;
 using BaseAuth.Application;
+using BaseAuth.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddApplication();
 // Add Infrastructure services
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddApiServices(builder.Configuration);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,10 +32,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors(policy => policy
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+    
 }
 
 app.UseHttpsRedirection();
@@ -41,5 +42,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Seed data
+await SeedData.SeedAsync(app.Services);
 
 app.Run();
