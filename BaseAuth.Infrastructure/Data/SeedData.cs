@@ -43,31 +43,35 @@ namespace BaseAuth.Infrastructure.Data
 
             var permissions = new List<Permission>
             {
-                // User permissions
-                new Permission { Name = "Create User", Description = "Can create new users", Resource = "Users", Type = PermissionType.Create },
-                new Permission { Name = "Read User", Description = "Can view user information", Resource = "Users", Type = PermissionType.Read },
-                new Permission { Name = "Update User", Description = "Can update user information", Resource = "Users", Type = PermissionType.Update },
-                new Permission { Name = "Delete User", Description = "Can delete users", Resource = "Users", Type = PermissionType.Delete },
-                new Permission { Name = "Manage User", Description = "Full user management", Resource = "Users", Type = PermissionType.Manage },
+                // User permissions - Flag enum ile kombinasyonlar
+                new Permission { Name = "User Management", Description = "Full user management permissions", Resource = "Users", Type = PermissionType.FullAccess },
+                new Permission { Name = "User Read Only", Description = "Can only view users", Resource = "Users", Type = PermissionType.Read },
+                new Permission { Name = "User Read Write", Description = "Can view, create and update users", Resource = "Users", Type = PermissionType.ReadWrite },
 
                 // Role permissions
-                new Permission { Name = "Create Role", Description = "Can create new roles", Resource = "Roles", Type = PermissionType.Create },
-                new Permission { Name = "Read Role", Description = "Can view role information", Resource = "Roles", Type = PermissionType.Read },
-                new Permission { Name = "Update Role", Description = "Can update role information", Resource = "Roles", Type = PermissionType.Update },
-                new Permission { Name = "Delete Role", Description = "Can delete roles", Resource = "Roles", Type = PermissionType.Delete },
-                new Permission { Name = "Manage Role", Description = "Full role management", Resource = "Roles", Type = PermissionType.Manage },
+                new Permission { Name = "Role Management", Description = "Full role management permissions", Resource = "Roles", Type = PermissionType.FullAccess },
+                new Permission { Name = "Role Read Only", Description = "Can only view roles", Resource = "Roles", Type = PermissionType.Read },
+                new Permission { Name = "Role Read Write", Description = "Can view, create and update roles", Resource = "Roles", Type = PermissionType.ReadWrite },
 
                 // Permission permissions
-                new Permission { Name = "Create Permission", Description = "Can create new permissions", Resource = "Permissions", Type = PermissionType.Create },
-                new Permission { Name = "Read Permission", Description = "Can view permission information", Resource = "Permissions", Type = PermissionType.Read },
-                new Permission { Name = "Update Permission", Description = "Can update permission information", Resource = "Permissions", Type = PermissionType.Update },
-                new Permission { Name = "Delete Permission", Description = "Can delete permissions", Resource = "Permissions", Type = PermissionType.Delete },
-                new Permission { Name = "Manage Permission", Description = "Full permission management", Resource = "Permissions", Type = PermissionType.Manage },
+                new Permission { Name = "Permission Management", Description = "Full permission management", Resource = "Permissions", Type = PermissionType.FullAccess },
+                new Permission { Name = "Permission Read Only", Description = "Can only view permissions", Resource = "Permissions", Type = PermissionType.Read },
+
+                // Dashboard permissions
+                new Permission { Name = "Dashboard Access", Description = "Can access dashboard", Resource = "Dashboard", Type = PermissionType.Read },
+                new Permission { Name = "Dashboard Management", Description = "Can manage dashboard settings", Resource = "Dashboard", Type = PermissionType.Manage },
+
+                // Reports permissions
+                new Permission { Name = "Reports Access", Description = "Can view and export reports", Resource = "Reports", Type = PermissionType.Read | PermissionType.Export },
+                new Permission { Name = "Reports Management", Description = "Full reports management", Resource = "Reports", Type = PermissionType.FullAccess },
+
+                // Settings permissions
+                new Permission { Name = "Settings Access", Description = "Can view settings", Resource = "Settings", Type = PermissionType.Read },
+                new Permission { Name = "Settings Management", Description = "Can manage all settings", Resource = "Settings", Type = PermissionType.Manage },
 
                 // System permissions
-                new Permission { Name = "System Admin", Description = "Full system administration", Resource = "System", Type = PermissionType.Manage },
-                new Permission { Name = "View Logs", Description = "Can view system logs", Resource = "System", Type = PermissionType.Read },
-                new Permission { Name = "Manage Settings", Description = "Can manage system settings", Resource = "System", Type = PermissionType.Update }
+                new Permission { Name = "System Admin", Description = "Full system administration", Resource = "System", Type = PermissionType.AdminAccess },
+                new Permission { Name = "System Read Only", Description = "Can view system information", Resource = "System", Type = PermissionType.Read }
             };
 
             await context.Permissions.AddRangeAsync(permissions);

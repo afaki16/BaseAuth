@@ -2,6 +2,7 @@ using BaseAuth.Application.Interfaces;
 using BaseAuth.Application.Services;
 using BaseAuth.Domain.Common;
 using BaseAuth.Domain.Entities;
+using BaseAuth.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,36 @@ namespace BaseAuth.Infrastructure.Services
             return Result.Success(hasPermission);
         }
 
+        // Yeni: Flag enum ile permission kontrolü
+        public async Task<Result<bool>> UserHasPermissionTypeAsync(int userId, string resource, PermissionType permissionType)
+        {
+            var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
+            if (user == null)
+                return Result.Failure<bool>("User not found");
+
+            var hasPermission = user.UserRoles
+                .SelectMany(ur => ur.Role.RolePermissions)
+                .Any(rp => rp.Permission.Resource == resource && 
+                          rp.Permission.HasPermission(permissionType));
+
+            return Result.Success(hasPermission);
+        }
+
+        // Yeni: Birden fazla permission type kontrolü
+        public async Task<Result<bool>> UserHasAnyPermissionTypeAsync(int userId, string resource, PermissionType permissionTypes)
+        {
+            var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
+            if (user == null)
+                return Result.Failure<bool>("User not found");
+
+            var hasPermission = user.UserRoles
+                .SelectMany(ur => ur.Role.RolePermissions)
+                .Any(rp => rp.Permission.Resource == resource && 
+                          rp.Permission.HasAnyPermission(permissionTypes));
+
+            return Result.Success(hasPermission);
+        }
+
         public async Task<Result<IEnumerable<string>>> GetUserPermissionsAsync(int userId)
         {
             var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
@@ -58,6 +89,23 @@ namespace BaseAuth.Infrastructure.Services
                 .ToList();
 
             return Result.Success<IEnumerable<string>>(permissions);
+        }
+
+        // Yeni: Flag enum ile permission listesi
+        public async Task<Result<IEnumerable<PermissionType>>> GetUserPermissionTypesAsync(int userId, string resource)
+        {
+            var user = await _unitOfWork.Users.GetUserWithPermissionsAsync(userId);
+            if (user == null)
+                return Result.Failure<IEnumerable<PermissionType>>("User not found");
+
+            var permissionTypes = user.UserRoles
+                .SelectMany(ur => ur.Role.RolePermissions)
+                .Where(rp => rp.Permission.Resource == resource)
+                .SelectMany(rp => rp.Permission.GetIndividualPermissions())
+                .Distinct()
+                .ToList();
+
+            return Result.Success<IEnumerable<PermissionType>>(permissionTypes);
         }
 
         public async Task<Result<bool>> RoleHasPermissionAsync(int roleId, string permission)
@@ -154,7 +202,6 @@ namespace BaseAuth.Infrastructure.Services
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success();
-
         }
     }
 } 
