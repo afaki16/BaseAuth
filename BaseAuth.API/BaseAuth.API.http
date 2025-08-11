@@ -1,6 +1,62 @@
 @BaseAuth.API_HostAddress = http://localhost:5156
 
-GET {{BaseAuth.API_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login to get access token
+POST {{BaseAuth.API_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
 
-###
+{
+  "email": "admin@baseauth.com",
+  "password": "Admin123!"
+}
+
+### Create Role with Permissions - Test 1 (Simple)
+POST {{BaseAuth.API_HostAddress}}/api/v1/roles
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Test Role 1",
+  "description": "Test role with read permissions",
+  "permissionIds": [1, 6, 13]
+}
+
+### Create Role with Permissions - Test 2 (Multiple)
+POST {{BaseAuth.API_HostAddress}}/api/v1/roles
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Test Role 2",
+  "description": "Test role with multiple permissions",
+  "permissionIds": [1, 2, 3, 6, 7, 8, 13, 14]
+}
+
+### Create Role with Permissions - Test 3 (Single)
+POST {{BaseAuth.API_HostAddress}}/api/v1/roles
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Test Role 3",
+  "description": "Test role with single permission",
+  "permissionIds": [1]
+}
+
+### Create Role with Permissions - Test 4 (Empty)
+POST {{BaseAuth.API_HostAddress}}/api/v1/roles
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Test Role 4",
+  "description": "Test role without permissions",
+  "permissionIds": []
+}
+
+### Get All Roles
+GET {{BaseAuth.API_HostAddress}}/api/v1/roles
+Authorization: Bearer {{auth_token}}
+
+### Get All Permissions
+GET {{BaseAuth.API_HostAddress}}/api/v1/permissions
+Authorization: Bearer {{auth_token}}

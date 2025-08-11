@@ -136,7 +136,14 @@ namespace BaseAuth.Infrastructure.Services
 
                 foreach (var permission in permissions)
                 {
+                    // Add the full permission claim
                     claims.Add(new Claim("permission", permission.FullPermission));
+                    
+                    // Add individual permission claims for each permission type
+                    foreach (var permissionType in permission.GetIndividualPermissions())
+                    {
+                        claims.Add(new Claim("permission", $"{permission.Resource}.{permissionType}"));
+                    }
                 }
 
                 var jwtSettings = _configuration.GetSection("JwtSettings");
