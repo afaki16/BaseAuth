@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BaseAuth.Domain.Enums
 {
@@ -19,5 +21,18 @@ namespace BaseAuth.Domain.Enums
         ReadWrite = Read | Create | Update,           // 2 | 1 | 4 = 7
         FullAccess = Create | Read | Update | Delete | Manage, // 31
         AdminAccess = FullAccess | Export | Import | Approve   // 255
+    }
+
+    public static class PermissionTypeExtensions
+    {
+        public static IEnumerable<PermissionType> GetIndividualPermissions(this PermissionType permissionType)
+        {
+            return Enum.GetValues<PermissionType>()
+                .Where(pt => pt != PermissionType.None && 
+                            pt != PermissionType.ReadWrite && 
+                            pt != PermissionType.FullAccess && 
+                            pt != PermissionType.AdminAccess &&
+                            permissionType.HasFlag(pt));
+        }
     }
 } 

@@ -9,6 +9,7 @@ namespace BaseAuth.Application.Interfaces
     {
         Task<Role> GetByNameAsync(string name);
         Task<Role> GetRoleWithPermissionsAsync(int roleId);
+        Task<IEnumerable<Role>> GetAllWithPermissionsAsync();
         Task<IEnumerable<Role>> GetRolesByUserIdAsync(int userId);
         Task<bool> RoleExistsAsync(string name);
         Task<bool> RoleHasPermissionAsync(int roleId, string permission);

@@ -5,6 +5,7 @@ using BaseAuth.Application.Features.Auth.Commands;
 using BaseAuth.Application.Features.Roles.Commands;
 using BaseAuth.Application.Features.Users.Commands;
 using BaseAuth.Domain.Entities;
+using BaseAuth.Domain.Enums;
 
 namespace BaseAuth.Application.Mappings
 {
@@ -44,7 +45,8 @@ namespace BaseAuth.Application.Mappings
 
             // Role mappings
             CreateMap<Role, RoleDto>()
-                .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.RolePermissions.Select(rp => rp.Permission)));
+                .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => 
+                    src.RolePermissions.Select(rp => rp.Permission).Where(p => p != null).ToList()));
 
             CreateMap<CreateRoleCommand, Role>()
                 .ForMember(dest => dest.RolePermissions, opt => opt.Ignore());
@@ -63,7 +65,10 @@ namespace BaseAuth.Application.Mappings
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore());
 
             // Permission mappings
-            CreateMap<Permission, PermissionDto>();
+            CreateMap<Permission, PermissionDto>()
+                .ForMember(dest => dest.IndividualPermissions, opt => opt.MapFrom(src => 
+                    src.Type.GetIndividualPermissions().Select(p => p.ToString()).ToList()));
+
             CreateMap<CreatePermissionDto, Permission>();
             CreateMap<UpdatePermissionDto, Permission>()
                 .ForMember(dest => dest.CreatedDate, opt => opt.Ignore());

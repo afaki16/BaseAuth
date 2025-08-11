@@ -28,6 +28,14 @@ namespace BaseAuth.Infrastructure.Repositories
                 .FirstOrDefaultAsync(r => r.Id == roleId);
         }
 
+        public async Task<IEnumerable<Role>> GetAllWithPermissionsAsync()
+        {
+            return await _dbSet
+                .Include(r => r.RolePermissions)
+                .ThenInclude(rp => rp.Permission)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Role>> GetRolesByUserIdAsync(int userId)
         {
             return await _context.UserRoles

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
@@ -95,60 +96,131 @@ namespace BaseAuth.API.Extensions
             });
 
             // Add authorization policies
-            services.AddAuthorization(options =>
-            {
-                // User permissions
-                options.AddPolicy("RequireUsersReadPermission", policy =>
-                    policy.RequireClaim("permission", "Users.Read"));
-                options.AddPolicy("RequireUsersCreatePermission", policy =>
-                    policy.RequireClaim("permission", "Users.Create"));
-                options.AddPolicy("RequireUsersUpdatePermission", policy =>
-                    policy.RequireClaim("permission", "Users.Update"));
-                options.AddPolicy("RequireUsersDeletePermission", policy =>
-                    policy.RequireClaim("permission", "Users.Delete"));
-                options.AddPolicy("RequireUsersManagePermission", policy =>
-                    policy.RequireClaim("permission", "Users.Manage"));
-
-                // Role permissions
-                options.AddPolicy("RequireRolesReadPermission", policy =>
-                    policy.RequireClaim("permission", "Roles.Read"));
-                options.AddPolicy("RequireRolesCreatePermission", policy =>
-                    policy.RequireClaim("permission", "Roles.Create"));
-                options.AddPolicy("RequireRolesUpdatePermission", policy =>
-                    policy.RequireClaim("permission", "Roles.Update"));
-                options.AddPolicy("RequireRolesDeletePermission", policy =>
-                    policy.RequireClaim("permission", "Roles.Delete"));
-                options.AddPolicy("RequireRolesManagePermission", policy =>
-                    policy.RequireClaim("permission", "Roles.Manage"));
-
-                // Permission permissions
-                options.AddPolicy("RequirePermissionsReadPermission", policy =>
-                    policy.RequireClaim("permission", "Permissions.Read"));
-                options.AddPolicy("RequirePermissionsManagePermission", policy =>
-                    policy.RequireClaim("permission", "Permissions.Manage"));
-
-                // Dashboard permissions
-                options.AddPolicy("RequireDashboardReadPermission", policy =>
-                    policy.RequireClaim("permission", "Dashboard.Read"));
-                options.AddPolicy("RequireDashboardManagePermission", policy =>
-                    policy.RequireClaim("permission", "Dashboard.Manage"));
-
-                // Reports permissions
-                options.AddPolicy("RequireReportsReadPermission", policy =>
-                    policy.RequireClaim("permission", "Reports.Read"));
-                options.AddPolicy("RequireReportsCreatePermission", policy =>
-                    policy.RequireClaim("permission", "Reports.Create"));
-                options.AddPolicy("RequireReportsManagePermission", policy =>
-                    policy.RequireClaim("permission", "Reports.Manage"));
-
-                // Admin role requirement
-                options.AddPolicy("RequireAdminRole", policy =>
-                    policy.RequireRole("Admin", "SuperAdmin"));
-                options.AddPolicy("RequireSuperAdminRole", policy =>
-                    policy.RequireRole("SuperAdmin"));
-            });
+            services.AddAuthorizationPolicies();
 
             return services;
+        }
+
+        private static void AddAuthorizationPolicies(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                // Resource-based permission policies
+                AddResourcePermissionPolicies(options);
+                
+                // Role-based policies
+                AddRoleBasedPolicies(options);
+                
+                // Custom policies
+                AddCustomPolicies(options);
+            });
+        }
+
+        private static void AddResourcePermissionPolicies(AuthorizationOptions options)
+        {
+            // Define resources and their permission types
+            var resourcePermissions = new Dictionary<string, string[]>
+            {
+                ["Users"] = new[] { "Read", "Create", "Update", "Delete", "Manage" },
+                ["Roles"] = new[] { "Read", "Create", "Update", "Delete", "Manage" },
+                ["Permissions"] = new[] { "Read", "Manage" },
+                ["Dashboard"] = new[] { "Read", "Manage" },
+                ["Reports"] = new[] { "Read", "Create", "Export", "Manage" },
+                ["Settings"] = new[] { "Read", "Update", "Manage" },
+                ["System"] = new[] { "Read", "Manage" },
+                ["Profile"] = new[] { "Read", "Update" },
+                ["Analytics"] = new[] { "Read", "Export" },
+                ["Data"] = new[] { "Read", "Export", "Import" }
+            };
+
+            // Generate policies for each resource and permission type
+            foreach (var resource in resourcePermissions)
+            {
+                foreach (var permissionType in resource.Value)
+                {
+                    var policyName = $"Require{resource.Key}{permissionType}Permission";
+                    var permissionClaim = $"{resource.Key}.{permissionType}";
+                    
+                    options.AddPolicy(policyName, policy =>
+                        policy.RequireClaim("permission", permissionClaim));
+                }
+            }
+
+            // Add combined permission policies
+            AddCombinedPermissionPolicies(options);
+        }
+
+        private static void AddCombinedPermissionPolicies(AuthorizationOptions options)
+        {
+            // Read-Write policies (Read + Create + Update)
+            var readWriteResources = new[] { "Users", "Roles", "Settings" };
+            foreach (var resource in readWriteResources)
+            {
+                options.AddPolicy($"Require{resource}ReadWritePermission", policy =>
+                {
+                    policy.RequireClaim("permission", $"{resource}.Read");
+                    policy.RequireClaim("permission", $"{resource}.Create");
+                    policy.RequireClaim("permission", $"{resource}.Update");
+                });
+            }
+
+            // Full Access policies (Read + Create + Update + Delete + Manage)
+            var fullAccessResources = new[] { "Users", "Roles", "Reports", "System" };
+            foreach (var resource in fullAccessResources)
+            {
+                options.AddPolicy($"Require{resource}FullAccessPermission", policy =>
+                {
+                    policy.RequireClaim("permission", $"{resource}.Read");
+                    policy.RequireClaim("permission", $"{resource}.Create");
+                    policy.RequireClaim("permission", $"{resource}.Update");
+                    policy.RequireClaim("permission", $"{resource}.Delete");
+                    policy.RequireClaim("permission", $"{resource}.Manage");
+                });
+            }
+        }
+
+        private static void AddRoleBasedPolicies(AuthorizationOptions options)
+        {
+            // Admin role requirement
+            options.AddPolicy("RequireAdminRole", policy =>
+                policy.RequireRole("Admin", "SuperAdmin"));
+            
+            options.AddPolicy("RequireSuperAdminRole", policy =>
+                policy.RequireRole("SuperAdmin"));
+            
+            options.AddPolicy("RequireManagerRole", policy =>
+                policy.RequireRole("Manager", "Admin", "SuperAdmin"));
+            
+            options.AddPolicy("RequireUserRole", policy =>
+                policy.RequireRole("User", "Manager", "Admin", "SuperAdmin"));
+        }
+
+        private static void AddCustomPolicies(AuthorizationOptions options)
+        {
+            // Custom business logic policies
+            options.AddPolicy("RequireActiveUser", policy =>
+                policy.RequireAssertion(context =>
+                {
+                    var user = context.User;
+                    var isActive = user.HasClaim(c => c.Type == "status" && c.Value == "Active");
+                    return isActive;
+                }));
+
+            options.AddPolicy("RequireEmailVerified", policy =>
+                policy.RequireAssertion(context =>
+                {
+                    var user = context.User;
+                    var emailVerified = user.HasClaim(c => c.Type == "email_verified" && c.Value == "true");
+                    return emailVerified;
+                }));
+
+            // Time-based policies
+            options.AddPolicy("RequireBusinessHours", policy =>
+                policy.RequireAssertion(context =>
+                {
+                    var currentHour = DateTime.UtcNow.Hour;
+                    return currentHour >= 9 && currentHour <= 17; // 9 AM - 5 PM UTC
+                }));
         }
     }
 } 
