@@ -85,7 +85,7 @@ namespace BaseAuth.API.Extensions
             {
                 options.AddPolicy("DefaultCorsPolicy", policy =>
                 {
-                    var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "*" };
+                    var allowedOrigins = configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>() ?? new[] { "*" };
                     
                     policy.WithOrigins(allowedOrigins)
                           .AllowAnyMethod()

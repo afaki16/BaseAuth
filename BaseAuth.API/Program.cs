@@ -23,8 +23,6 @@ builder.Services.AddApiServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +34,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Add CORS middleware (must be before authentication)
+app.UseCors("DefaultCorsPolicy");
 
 // Authentication and Authorization (order is important)
 app.UseAuthentication();
