@@ -39,6 +39,45 @@ namespace BaseAuth.Infrastructure.Data
             }
         }
 
+        public static async Task SeedAsyncIfEmpty(IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+
+            try
+            {
+                // Check if database has any data
+                var hasAnyData = await context.Users.AnyAsync() || 
+                                await context.Roles.AnyAsync() || 
+                                await context.Permissions.AnyAsync();
+
+                if (hasAnyData)
+                {
+                    logger.LogInformation("Database already contains data. Skipping seed data.");
+                    return;
+                }
+
+                logger.LogInformation("Database is empty. Starting seed data process...");
+
+                // Seed Permissions
+                await SeedPermissionsAsync(context);
+
+                // Seed Roles
+                await SeedRolesAsync(context);
+
+                // Seed Admin User
+                await SeedAdminUserAsync(context);
+
+                logger.LogInformation("Seed data completed successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while seeding data.");
+                throw;
+            }
+        }
+
         private static async Task ClearExistingDataAsync(ApplicationDbContext context, ILogger logger)
         {
             try
