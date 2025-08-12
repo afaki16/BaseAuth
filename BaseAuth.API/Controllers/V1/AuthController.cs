@@ -305,33 +305,4 @@ namespace BaseAuth.API.Controllers.V1
             return HandleResult(result);
         }
     }
-
-    public class LogoutRequestDto
-    {
-        public string RefreshToken { get; set; }
-        public string Reason { get; set; }
-    }
-
-    public class RevokeSessionRequestDto
-    {
-        public string RefreshToken { get; set; }
-        public string Reason { get; set; }
-    }
-
-    public class ChangePasswordRequestDto
-    {
-        public string CurrentPassword { get; set; }
-        public string NewPassword { get; set; }
-    }
-
-    public class ForgotPasswordRequestDto
-    {
-        public string Email { get; set; }
-    }
-
-    public class ResetPasswordRequestDto
-    {
-        public string Token { get; set; }
-        public string NewPassword { get; set; }
-    }
 } 

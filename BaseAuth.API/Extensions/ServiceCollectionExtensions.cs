@@ -121,16 +121,7 @@ namespace BaseAuth.API.Extensions
             // Get all permissions from static constants
             var allPermissions = BaseAuth.Domain.Constants.Permissions.Helper.GetAllPermissions();
             
-            // Generate policies for each permission
-            foreach (var permission in allPermissions)
-            {
-                var policyName = $"Require{permission.Replace(".", "")}Permission";
-                
-                options.AddPolicy(policyName, policy =>
-                    policy.RequireClaim("permission", permission));
-            }
-
-            // Add simplified policy names (e.g., "user.create", "role.read")
+            // Generate simplified policy names (e.g., "users.read", "roles.create")
             foreach (var permission in allPermissions)
             {
                 var parts = permission.Split('.');
@@ -155,7 +146,8 @@ namespace BaseAuth.API.Extensions
             var readWriteResources = new[] { "Users", "Roles", "Settings" };
             foreach (var resource in readWriteResources)
             {
-                options.AddPolicy($"Require{resource}ReadWritePermission", policy =>
+                var resourceLower = resource.ToLower();
+                options.AddPolicy($"{resourceLower}.readwrite", policy =>
                 {
                     policy.RequireClaim("permission", $"{resource}.Read");
                     policy.RequireClaim("permission", $"{resource}.Create");
@@ -167,7 +159,8 @@ namespace BaseAuth.API.Extensions
             var fullAccessResources = new[] { "Users", "Roles", "Reports", "System" };
             foreach (var resource in fullAccessResources)
             {
-                options.AddPolicy($"Require{resource}FullAccessPermission", policy =>
+                var resourceLower = resource.ToLower();
+                options.AddPolicy($"{resourceLower}.fullaccess", policy =>
                 {
                     policy.RequireClaim("permission", $"{resource}.Read");
                     policy.RequireClaim("permission", $"{resource}.Create");

@@ -27,7 +27,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="searchTerm">Search term for filtering</param>
         /// <returns>List of users</returns>
         [HttpGet]
-        [Authorize(Policy = "RequireUsersReadPermission")]
+        [Authorize(Policy = "users.read")]
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -51,7 +51,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">User ID</param>
         /// <returns>User details</returns>
         [HttpGet("{id:int}")]
-        [Authorize(Policy = "RequireUsersReadPermission")]
+        [Authorize(Policy = "users.read")]
         [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -70,7 +70,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="dto">User creation data</param>
         /// <returns>Created user</returns>
         [HttpPost]
-        [Authorize(Policy = "RequireUsersCreatePermission")]
+        [Authorize(Policy = "users.create")]
         [ProducesResponseType(typeof(UserDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -103,7 +103,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="dto">User update data</param>
         /// <returns>Updated user</returns>
         [HttpPut("{id:int}")]
-        [Authorize(Policy = "RequireUsersUpdatePermission")]
+        [Authorize(Policy = "users.update")]
         [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -133,7 +133,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">User ID</param>
         /// <returns>Success message</returns>
         [HttpDelete("{id:int}")]
-        [Authorize(Policy = "RequireUsersDeletePermission")]
+        [Authorize(Policy = "users.delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]

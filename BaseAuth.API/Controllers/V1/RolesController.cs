@@ -24,7 +24,7 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <returns>List of roles</returns>
         [HttpGet]
-        [Authorize(Policy = "RequireRolesReadPermission")]
+        [Authorize(Policy = "roles.read")]
         [ProducesResponseType(typeof(IEnumerable<RoleDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -41,7 +41,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">Role ID</param>
         /// <returns>Role details</returns>
         [HttpGet("{id:int}")]
-        [Authorize(Policy = "RequireRolesReadPermission")]
+        [Authorize(Policy = "roles.read")]
         [ProducesResponseType(typeof(RoleDto), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -59,7 +59,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="dto">Role creation data</param>
         /// <returns>Created role</returns>
         [HttpPost]
-        [Authorize(Policy = "RequireRolesCreatePermission")]
+        [Authorize(Policy = "roles.create")]
         [ProducesResponseType(typeof(RoleDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -88,7 +88,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="dto">Role update data</param>
         /// <returns>Updated role</returns>
         [HttpPut("{id:int}")]
-        [Authorize(Policy = "RequireRolesUpdatePermission")]
+        [Authorize(Policy = "roles.update")]
         [ProducesResponseType(typeof(RoleDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -114,7 +114,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="id">Role ID</param>
         /// <returns>Success message</returns>
         [HttpDelete("{id:int}")]
-        [Authorize(Policy = "RequireRolesDeletePermission")]
+        [Authorize(Policy = "roles.delete")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]

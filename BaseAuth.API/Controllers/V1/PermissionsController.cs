@@ -23,7 +23,7 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <returns>List of permissions</returns>
         [HttpGet]
-        [Authorize(Policy = "RequirePermissionsReadPermission")]
+        [Authorize(Policy = "permissions.read")]
         [ProducesResponseType(typeof(IEnumerable<PermissionDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -39,7 +39,7 @@ namespace BaseAuth.API.Controllers.V1
         /// </summary>
         /// <returns>Permissions grouped by resource</returns>
         [HttpGet("grouped")]
-        [Authorize(Policy = "RequirePermissionsReadPermission")]
+        [Authorize(Policy = "permissions.read")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -76,7 +76,7 @@ namespace BaseAuth.API.Controllers.V1
         /// <param name="resource">Resource name (e.g., Users, Roles, Dashboard)</param>
         /// <returns>Permissions for the specified resource</returns>
         [HttpGet("resource/{resource}")]
-        [Authorize(Policy = "RequirePermissionsReadPermission")]
+        [Authorize(Policy = "permissions.read")]
         [ProducesResponseType(typeof(IEnumerable<PermissionDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
