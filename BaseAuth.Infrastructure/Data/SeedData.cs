@@ -103,8 +103,6 @@ namespace BaseAuth.Infrastructure.Data
 
         private static async Task SeedPermissionsAsync(ApplicationDbContext context)
         {
-            if (await context.Permissions.AnyAsync())
-                return;
 
             var permissions = new List<Permission>
             {
@@ -152,8 +150,6 @@ namespace BaseAuth.Infrastructure.Data
 
         private static async Task SeedRolesAsync(ApplicationDbContext context)
         {
-            if (await context.Roles.AnyAsync())
-                return;
 
             var adminRole = new Role
             {
@@ -179,8 +175,6 @@ namespace BaseAuth.Infrastructure.Data
 
         private static async Task SeedAdminUserAsync(ApplicationDbContext context)
         {
-            if (await context.Users.AnyAsync(u => u.Email == "admin@baseauth.com"))
-                return;
 
             var adminUser = new User
             {
