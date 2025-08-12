@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BaseAuth.Application.Features.Auth.Commands
 {
-    public class LogoutCommand : IRequest<Result>
+    public class RevokeSessionCommand : IRequest<Result>
     {
         public string RefreshToken { get; set; }
         public string IpAddress { get; set; }

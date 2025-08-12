@@ -29,7 +29,7 @@ namespace BaseAuth.Infrastructure.Services
             _passwordService = passwordService;
         }
 
-        public async Task<Result<LoginResponseDto>> LoginAsync(string email, string password, string ipAddress, string userAgent)
+        public async Task<Result<LoginResponseDto>> LoginAsync(string email, string password, string ipAddress, string userAgent, string deviceId = null, string deviceName = null)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace BaseAuth.Infrastructure.Services
                 if (!accessTokenResult.IsSuccess)
                     return Result.Failure<LoginResponseDto>(accessTokenResult.Error);
 
-                var refreshTokenResult = await GenerateRefreshTokenAsync(user, ipAddress, userAgent);
+                var refreshTokenResult = await GenerateRefreshTokenAsync(user, ipAddress, userAgent, deviceId, deviceName);
                 if (!refreshTokenResult.IsSuccess)
                     return Result.Failure<LoginResponseDto>(refreshTokenResult.Error);
 
@@ -167,12 +167,15 @@ namespace BaseAuth.Infrastructure.Services
             }
         }
 
-        public async Task<Result<RefreshToken>> GenerateRefreshTokenAsync(User user, string ipAddress, string userAgent)
+        public async Task<Result<RefreshToken>> GenerateRefreshTokenAsync(User user, string ipAddress, string userAgent, string deviceId = null, string deviceName = null)
         {
             try
             {
-                // Revoke existing active tokens
-                await _unitOfWork.RefreshTokens.RevokeAllUserTokensAsync(user.Id);
+                // Revoke existing active tokens for the same device if deviceId is provided
+                if (!string.IsNullOrEmpty(deviceId))
+                {
+                    await _unitOfWork.RefreshTokens.RevokeTokensByDeviceAsync(user.Id, deviceId, ipAddress, userAgent, "New login from same device");
+                }
 
                 var randomBytes = new byte[64];
                 using var rng = RandomNumberGenerator.Create();
@@ -184,7 +187,11 @@ namespace BaseAuth.Infrastructure.Services
                     Token = Convert.ToBase64String(randomBytes),
                     ExpiryDate = DateTime.UtcNow.AddDays(int.Parse(_configuration["JwtSettings:RefreshTokenExpiryInDays"])),
                     IpAddress = ipAddress,
-                    UserAgent = userAgent
+                    UserAgent = userAgent,
+                    DeviceId = deviceId,
+                    DeviceName = deviceName,
+                    DeviceType = GetDeviceType(userAgent),
+                    Location = await GetLocationFromIpAsync(ipAddress)
                 };
 
                 await _unitOfWork.RefreshTokens.AddAsync(refreshToken);
@@ -196,6 +203,30 @@ namespace BaseAuth.Infrastructure.Services
             {
                 return Result.Failure<RefreshToken>($"Error generating refresh token: {ex.Message}");
             }
+        }
+
+        private string GetDeviceType(string userAgent)
+        {
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown";
+
+            userAgent = userAgent.ToLower();
+            
+            if (userAgent.Contains("mobile") || userAgent.Contains("android") || userAgent.Contains("iphone") || userAgent.Contains("ipad"))
+                return "Mobile";
+            if (userAgent.Contains("tablet"))
+                return "Tablet";
+            if (userAgent.Contains("desktop") || userAgent.Contains("windows") || userAgent.Contains("mac") || userAgent.Contains("linux"))
+                return "Desktop";
+            
+            return "Unknown";
+        }
+
+        private async Task<string> GetLocationFromIpAsync(string ipAddress)
+        {
+            // TODO: Implement IP geolocation service
+            // For now, return a placeholder
+            return "Unknown";
         }
 
         public async Task<Result<LoginResponseDto>> RefreshTokenAsync(string accessToken, string refreshToken, string ipAddress, string userAgent)
@@ -263,11 +294,11 @@ namespace BaseAuth.Infrastructure.Services
             }
         }
 
-        public async Task<Result> RevokeTokenAsync(string refreshToken)
+        public async Task<Result> RevokeTokenAsync(string refreshToken, string ipAddress = null, string userAgent = null, string reason = null)
         {
             try
             {
-                await _unitOfWork.RefreshTokens.RevokeTokenAsync(refreshToken);
+                await _unitOfWork.RefreshTokens.RevokeTokenAsync(refreshToken, ipAddress, userAgent, reason);
                 await _unitOfWork.SaveChangesAsync();
                 return Result.Success();
             }
@@ -277,17 +308,31 @@ namespace BaseAuth.Infrastructure.Services
             }
         }
 
-        public async Task<Result> RevokeAllUserTokensAsync(int userId)
+        public async Task<Result> RevokeAllUserTokensAsync(int userId, string ipAddress = null, string userAgent = null, string reason = null)
         {
             try
             {
-                await _unitOfWork.RefreshTokens.RevokeAllUserTokensAsync(userId);
+                await _unitOfWork.RefreshTokens.RevokeAllUserTokensAsync(userId, ipAddress, userAgent, reason);
                 await _unitOfWork.SaveChangesAsync();
                 return Result.Success();
             }
             catch (Exception ex)
             {
                 return Result.Failure($"Error revoking user tokens: {ex.Message}");
+            }
+        }
+
+        public async Task<Result> RevokeTokensByDeviceAsync(int userId, string deviceId, string ipAddress = null, string userAgent = null, string reason = null)
+        {
+            try
+            {
+                await _unitOfWork.RefreshTokens.RevokeTokensByDeviceAsync(userId, deviceId, ipAddress, userAgent, reason);
+                await _unitOfWork.SaveChangesAsync();
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure($"Error revoking device tokens: {ex.Message}");
             }
         }
 

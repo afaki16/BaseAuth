@@ -1,5 +1,6 @@
 using BaseAuth.Domain.Entities;
 using BaseAuth.Domain.Enums;
+using BaseAuth.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -103,54 +104,63 @@ namespace BaseAuth.Infrastructure.Data
 
         private static async Task SeedPermissionsAsync(ApplicationDbContext context)
         {
+            var permissions = new List<Permission>();
 
-            var permissions = new List<Permission>
+            // Get all permissions from static constants
+            var allPermissions = Permissions.Helper.GetAllPermissions();
+            
+            foreach (var permissionName in allPermissions)
             {
-                // User permissions - Controller policy'lerine uygun
-                new Permission { Name = "Users Read", Description = "Can view users", Resource = "Users", Type = PermissionType.Read },
-                new Permission { Name = "Users Create", Description = "Can create users", Resource = "Users", Type = PermissionType.Create },
-                new Permission { Name = "Users Update", Description = "Can update users", Resource = "Users", Type = PermissionType.Update },
-                new Permission { Name = "Users Delete", Description = "Can delete users", Resource = "Users", Type = PermissionType.Delete },
-                new Permission { Name = "Users Manage", Description = "Can manage users", Resource = "Users", Type = PermissionType.Manage },
-
-                // Role permissions - Controller policy'lerine uygun
-                new Permission { Name = "Roles Read", Description = "Can view roles", Resource = "Roles", Type = PermissionType.Read },
-                new Permission { Name = "Roles Create", Description = "Can create roles", Resource = "Roles", Type = PermissionType.Create },
-                new Permission { Name = "Roles Update", Description = "Can update roles", Resource = "Roles", Type = PermissionType.Update },
-                new Permission { Name = "Roles Delete", Description = "Can delete roles", Resource = "Roles", Type = PermissionType.Delete },
-                new Permission { Name = "Roles Manage", Description = "Can manage roles", Resource = "Roles", Type = PermissionType.Manage },
-
-                // Permission permissions
-                new Permission { Name = "Permissions Read", Description = "Can view permissions", Resource = "Permissions", Type = PermissionType.Read },
-                new Permission { Name = "Permissions Manage", Description = "Can manage permissions", Resource = "Permissions", Type = PermissionType.Manage },
-
-                // Dashboard permissions
-                new Permission { Name = "Dashboard Read", Description = "Can access dashboard", Resource = "Dashboard", Type = PermissionType.Read },
-                new Permission { Name = "Dashboard Manage", Description = "Can manage dashboard settings", Resource = "Dashboard", Type = PermissionType.Manage },
-
-                // Reports permissions
-                new Permission { Name = "Reports Read", Description = "Can view reports", Resource = "Reports", Type = PermissionType.Read },
-                new Permission { Name = "Reports Create", Description = "Can create reports", Resource = "Reports", Type = PermissionType.Create },
-                new Permission { Name = "Reports Export", Description = "Can export reports", Resource = "Reports", Type = PermissionType.Export },
-                new Permission { Name = "Reports Manage", Description = "Can manage reports", Resource = "Reports", Type = PermissionType.Manage },
-
-                // Settings permissions
-                new Permission { Name = "Settings Read", Description = "Can view settings", Resource = "Settings", Type = PermissionType.Read },
-                new Permission { Name = "Settings Update", Description = "Can update settings", Resource = "Settings", Type = PermissionType.Update },
-                new Permission { Name = "Settings Manage", Description = "Can manage all settings", Resource = "Settings", Type = PermissionType.Manage },
-
-                // System permissions
-                new Permission { Name = "System Read", Description = "Can view system information", Resource = "System", Type = PermissionType.Read },
-                new Permission { Name = "System Manage", Description = "Full system administration", Resource = "System", Type = PermissionType.Manage }
-            };
+                var parts = permissionName.Split('.');
+                if (parts.Length == 2)
+                {
+                    var resource = parts[0];
+                    var action = parts[1];
+                    
+                    // Map action to PermissionType
+                    var permissionType = MapActionToPermissionType(action);
+                    
+                    permissions.Add(new Permission
+                    {
+                        Name = permissionName,
+                        Description = $"Can {action.ToLower()} {resource.ToLower()}",
+                        Resource = resource,
+                        Type = permissionType
+                    });
+                }
+            }
 
             await context.Permissions.AddRangeAsync(permissions);
             await context.SaveChangesAsync();
         }
 
+        private static PermissionType MapActionToPermissionType(string action)
+        {
+            return action.ToLower() switch
+            {
+                "read" => PermissionType.Read,
+                "create" => PermissionType.Create,
+                "update" => PermissionType.Update,
+                "delete" => PermissionType.Delete,
+                "manage" => PermissionType.Manage,
+                "export" => PermissionType.Export,
+                "import" => PermissionType.Import,
+                "approve" => PermissionType.Approve,
+                "assign" => PermissionType.Manage, // Assign maps to Manage
+                "analytics" => PermissionType.Read, // Analytics maps to Read
+                "system" => PermissionType.Manage, // System maps to Manage
+                "backup" => PermissionType.Export, // Backup maps to Export
+                "restore" => PermissionType.Import, // Restore maps to Import
+                "send" => PermissionType.Create, // Send maps to Create
+                "access" => PermissionType.Read, // Access maps to Read
+                "ratelimit" => PermissionType.Manage, // RateLimit maps to Manage
+                "maintenance" => PermissionType.Manage, // Maintenance maps to Manage
+                _ => PermissionType.Read // Default to Read
+            };
+        }
+
         private static async Task SeedRolesAsync(ApplicationDbContext context)
         {
-
             var adminRole = new Role
             {
                 Name = "Admin",
@@ -175,7 +185,6 @@ namespace BaseAuth.Infrastructure.Data
 
         private static async Task SeedAdminUserAsync(ApplicationDbContext context)
         {
-
             var adminUser = new User
             {
                 FirstName = "System",

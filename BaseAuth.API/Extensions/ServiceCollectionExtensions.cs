@@ -118,31 +118,30 @@ namespace BaseAuth.API.Extensions
 
         private static void AddResourcePermissionPolicies(AuthorizationOptions options)
         {
-            // Define resources and their permission types
-            var resourcePermissions = new Dictionary<string, string[]>
+            // Get all permissions from static constants
+            var allPermissions = BaseAuth.Domain.Constants.Permissions.Helper.GetAllPermissions();
+            
+            // Generate policies for each permission
+            foreach (var permission in allPermissions)
             {
-                ["Users"] = new[] { "Read", "Create", "Update", "Delete", "Manage" },
-                ["Roles"] = new[] { "Read", "Create", "Update", "Delete", "Manage" },
-                ["Permissions"] = new[] { "Read", "Manage" },
-                ["Dashboard"] = new[] { "Read", "Manage" },
-                ["Reports"] = new[] { "Read", "Create", "Export", "Manage" },
-                ["Settings"] = new[] { "Read", "Update", "Manage" },
-                ["System"] = new[] { "Read", "Manage" },
-                ["Profile"] = new[] { "Read", "Update" },
-                ["Analytics"] = new[] { "Read", "Export" },
-                ["Data"] = new[] { "Read", "Export", "Import" }
-            };
+                var policyName = $"Require{permission.Replace(".", "")}Permission";
+                
+                options.AddPolicy(policyName, policy =>
+                    policy.RequireClaim("permission", permission));
+            }
 
-            // Generate policies for each resource and permission type
-            foreach (var resource in resourcePermissions)
+            // Add simplified policy names (e.g., "user.create", "role.read")
+            foreach (var permission in allPermissions)
             {
-                foreach (var permissionType in resource.Value)
+                var parts = permission.Split('.');
+                if (parts.Length == 2)
                 {
-                    var policyName = $"Require{resource.Key}{permissionType}Permission";
-                    var permissionClaim = $"{resource.Key}.{permissionType}";
+                    var resource = parts[0].ToLower();
+                    var action = parts[1].ToLower();
+                    var policyName = $"{resource}.{action}";
                     
                     options.AddPolicy(policyName, policy =>
-                        policy.RequireClaim("permission", permissionClaim));
+                        policy.RequireClaim("permission", permission));
                 }
             }
 

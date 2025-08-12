@@ -19,7 +19,7 @@ namespace BaseAuth.Application.Features.Auth.Handlers
 
         public async Task<Result<Application.DTOs.Auth.LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            return await _authService.LoginAsync(request.Email, request.Password, request.IpAddress, request.UserAgent);
+            return await _authService.LoginAsync(request.Email, request.Password, request.IpAddress, request.UserAgent, request.DeviceId, request.DeviceName);
         }
     }
 } 
