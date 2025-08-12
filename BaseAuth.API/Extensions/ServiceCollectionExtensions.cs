@@ -143,7 +143,7 @@ namespace BaseAuth.API.Extensions
         private static void AddCombinedPermissionPolicies(AuthorizationOptions options)
         {
             // Read-Write policies (Read + Create + Update)
-            var readWriteResources = new[] { "Users", "Roles", "Settings" };
+            var readWriteResources = new[] { "Users", "Roles", "Permissions" };
             foreach (var resource in readWriteResources)
             {
                 var resourceLower = resource.ToLower();
@@ -155,8 +155,8 @@ namespace BaseAuth.API.Extensions
                 });
             }
 
-            // Full Access policies (Read + Create + Update + Delete + Manage)
-            var fullAccessResources = new[] { "Users", "Roles", "Reports", "System" };
+            // Full Access policies (Read + Create + Update + Delete)
+            var fullAccessResources = new[] { "Users", "Roles", "Permissions" };
             foreach (var resource in fullAccessResources)
             {
                 var resourceLower = resource.ToLower();
@@ -166,7 +166,6 @@ namespace BaseAuth.API.Extensions
                     policy.RequireClaim("permission", $"{resource}.Create");
                     policy.RequireClaim("permission", $"{resource}.Update");
                     policy.RequireClaim("permission", $"{resource}.Delete");
-                    policy.RequireClaim("permission", $"{resource}.Manage");
                 });
             }
         }

@@ -142,19 +142,6 @@ namespace BaseAuth.Infrastructure.Data
                 "create" => PermissionType.Create,
                 "update" => PermissionType.Update,
                 "delete" => PermissionType.Delete,
-                "manage" => PermissionType.Manage,
-                "export" => PermissionType.Export,
-                "import" => PermissionType.Import,
-                "approve" => PermissionType.Approve,
-                "assign" => PermissionType.Manage, // Assign maps to Manage
-                "analytics" => PermissionType.Read, // Analytics maps to Read
-                "system" => PermissionType.Manage, // System maps to Manage
-                "backup" => PermissionType.Export, // Backup maps to Export
-                "restore" => PermissionType.Import, // Restore maps to Import
-                "send" => PermissionType.Create, // Send maps to Create
-                "access" => PermissionType.Read, // Access maps to Read
-                "ratelimit" => PermissionType.Manage, // RateLimit maps to Manage
-                "maintenance" => PermissionType.Manage, // Maintenance maps to Manage
                 _ => PermissionType.Read // Default to Read
             };
         }

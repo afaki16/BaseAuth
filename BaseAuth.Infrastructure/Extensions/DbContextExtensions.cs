@@ -54,27 +54,30 @@ namespace BaseAuth.Infrastructure.Extensions
                 new Permission { Name = "Users.Read", Description = "View users", Resource = "Users", Type = PermissionType.Read },
                 new Permission { Name = "Users.Update", Description = "Update users", Resource = "Users", Type = PermissionType.Update },
                 new Permission { Name = "Users.Delete", Description = "Delete users", Resource = "Users", Type = PermissionType.Delete },
-                new Permission { Name = "Users.Manage", Description = "Full user management", Resource = "Users", Type = PermissionType.Manage },
 
                 // Role permissions
                 new Permission { Name = "Roles.Create", Description = "Create roles", Resource = "Roles", Type = PermissionType.Create },
                 new Permission { Name = "Roles.Read", Description = "View roles", Resource = "Roles", Type = PermissionType.Read },
                 new Permission { Name = "Roles.Update", Description = "Update roles", Resource = "Roles", Type = PermissionType.Update },
                 new Permission { Name = "Roles.Delete", Description = "Delete roles", Resource = "Roles", Type = PermissionType.Delete },
-                new Permission { Name = "Roles.Manage", Description = "Full role management", Resource = "Roles", Type = PermissionType.Manage },
 
                 // Permission permissions
                 new Permission { Name = "Permissions.Read", Description = "View permissions", Resource = "Permissions", Type = PermissionType.Read },
-                new Permission { Name = "Permissions.Manage", Description = "Full permission management", Resource = "Permissions", Type = PermissionType.Manage },
+                new Permission { Name = "Permissions.Create", Description = "Create permissions", Resource = "Permissions", Type = PermissionType.Create },
+                new Permission { Name = "Permissions.Update", Description = "Update permissions", Resource = "Permissions", Type = PermissionType.Update },
+                new Permission { Name = "Permissions.Delete", Description = "Delete permissions", Resource = "Permissions", Type = PermissionType.Delete },
 
                 // Dashboard permissions
                 new Permission { Name = "Dashboard.Read", Description = "View dashboard", Resource = "Dashboard", Type = PermissionType.Read },
-                new Permission { Name = "Dashboard.Manage", Description = "Manage dashboard", Resource = "Dashboard", Type = PermissionType.Manage },
+                new Permission { Name = "Dashboard.Create", Description = "Create dashboard", Resource = "Dashboard", Type = PermissionType.Create },
+                new Permission { Name = "Dashboard.Update", Description = "Update dashboard", Resource = "Dashboard", Type = PermissionType.Update },
+                new Permission { Name = "Dashboard.Delete", Description = "Delete dashboard", Resource = "Dashboard", Type = PermissionType.Delete },
 
                 // Reports permissions
                 new Permission { Name = "Reports.Read", Description = "View reports", Resource = "Reports", Type = PermissionType.Read },
                 new Permission { Name = "Reports.Create", Description = "Create reports", Resource = "Reports", Type = PermissionType.Create },
-                new Permission { Name = "Reports.Manage", Description = "Full report management", Resource = "Reports", Type = PermissionType.Manage }
+                new Permission { Name = "Reports.Update", Description = "Update reports", Resource = "Reports", Type = PermissionType.Update },
+                new Permission { Name = "Reports.Delete", Description = "Delete reports", Resource = "Reports", Type = PermissionType.Delete }
             };
 
             await context.Permissions.AddRangeAsync(permissions);
@@ -129,7 +132,7 @@ namespace BaseAuth.Infrastructure.Extensions
                 "Users.Create", "Users.Read", "Users.Update", "Users.Delete",
                 "Roles.Read", "Roles.Update",
                 "Permissions.Read",
-                "Dashboard.Read", "Dashboard.Manage",
+                "Dashboard.Read", "Dashboard.Create", "Dashboard.Update",
                 "Reports.Read", "Reports.Create"
             };
 
