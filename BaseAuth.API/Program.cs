@@ -44,7 +44,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Seed data
-await SeedData.SeedAsync(app.Services);
+// Seed data only if database is empty
+await SeedData.SeedAsyncIfEmpty(app.Services);
 
 app.Run();
