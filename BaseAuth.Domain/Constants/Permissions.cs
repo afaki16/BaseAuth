@@ -23,13 +23,22 @@ namespace BaseAuth.Domain.Constants
         // Permission permissions
         public static class Permission
         {
-            public const string Read = "Permissions.Read";
+            public const string Read = "Permissions.Read"; 
             public const string Create = "Permissions.Create";
             public const string Update = "Permissions.Update";
             public const string Delete = "Permissions.Delete";
         }
 
-       
+        public static class Alperen
+        {
+            public const string Read = "Alperen.Read";
+            public const string Create = "Alperen.Create";
+            public const string Update = "Alperen.Update";
+            public const string Delete = "Alperen.Delete";
+        }
+
+
+
 
         // Helper methods
         public static class Helper
