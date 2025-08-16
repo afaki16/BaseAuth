@@ -47,4 +47,11 @@ app.MapControllers();
 // Seed data only if database is empty
 await SeedData.SeedAsyncIfEmpty(app.Services);
 
+// Her başlatmada eksik permission'ları ekle
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<BaseAuth.Infrastructure.Data.ApplicationDbContext>();
+    await BaseAuth.Infrastructure.Data.SeedData.SeedPermissionsAsync(context);
+}
+
 app.Run();
