@@ -102,25 +102,31 @@ namespace BaseAuth.Infrastructure.Data
             }
         }
 
-        private static async Task SeedPermissionsAsync(ApplicationDbContext context)
+        public static async Task SeedPermissionsAsync(ApplicationDbContext context)
         {
-            var permissions = new List<Permission>();
-
             // Get all permissions from static constants
             var allPermissions = Permissions.Helper.GetAllPermissions();
-            
+
+            // Veritabanındaki mevcut permission isimlerini al
+            var existingPermissionNames = await context.Permissions
+                .Select(p => p.Name)
+                .ToListAsync();
+
+            var newPermissions = new List<Permission>();
+
             foreach (var permissionName in allPermissions)
             {
+                if (existingPermissionNames.Contains(permissionName))
+                    continue; // Zaten varsa ekleme
+
                 var parts = permissionName.Split('.');
                 if (parts.Length == 2)
                 {
                     var resource = parts[0];
                     var action = parts[1];
-                    
-                    // Map action to PermissionType
                     var permissionType = MapActionToPermissionType(action);
-                    
-                    permissions.Add(new Permission
+
+                    newPermissions.Add(new Permission
                     {
                         Name = permissionName,
                         Description = $"Can {action.ToLower()} {resource.ToLower()}",
@@ -130,8 +136,11 @@ namespace BaseAuth.Infrastructure.Data
                 }
             }
 
-            await context.Permissions.AddRangeAsync(permissions);
-            await context.SaveChangesAsync();
+            if (newPermissions.Count > 0)
+            {
+                await context.Permissions.AddRangeAsync(newPermissions);
+                await context.SaveChangesAsync();
+            }
         }
 
         private static PermissionType MapActionToPermissionType(string action)
