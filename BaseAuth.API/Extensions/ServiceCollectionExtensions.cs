@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -10,25 +9,6 @@ namespace BaseAuth.API.Extensions
     {
         public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // Add API versioning
-            services.AddApiVersioning(opt =>
-            {
-                opt.DefaultApiVersion = new ApiVersion(1, 0);
-                opt.AssumeDefaultVersionWhenUnspecified = true;
-                opt.ApiVersionReader = ApiVersionReader.Combine(
-                    new UrlSegmentApiVersionReader(),
-                    new QueryStringApiVersionReader("version"),
-                    new HeaderApiVersionReader("X-Version"),
-                    new MediaTypeApiVersionReader("ver")
-                );
-            });
-
-            services.AddVersionedApiExplorer(setup =>
-            {
-                setup.GroupNameFormat = "'v'VVV";
-                setup.SubstituteApiVersionInUrl = true;
-            });
-
             // Add Swagger
             services.AddSwaggerGen(c =>
             {
@@ -77,8 +57,6 @@ namespace BaseAuth.API.Extensions
                     }
                 });
 
-                // Custom operation filter for better documentation
-                c.OperationFilter<SwaggerDefaultValues>();
             });
 
             // Add CORS
