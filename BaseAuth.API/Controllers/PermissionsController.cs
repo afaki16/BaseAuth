@@ -5,9 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BaseAuth.API.Controllers.V1
+namespace BaseAuth.API.Controllers
 {
-    [ApiVersion("1.0")]
     [Authorize]
     public class PermissionsController : BaseController
     {
@@ -99,4 +98,4 @@ namespace BaseAuth.API.Controllers.V1
             return Ok(new { success = true, data = resourcePermissions });
         }
     }
-} 
+}

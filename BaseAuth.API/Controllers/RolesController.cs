@@ -6,9 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BaseAuth.API.Controllers.V1
+namespace BaseAuth.API.Controllers
 {
-    [ApiVersion("1.0")]
     [Authorize]
     public class RolesController : BaseController
     {
@@ -127,4 +126,4 @@ namespace BaseAuth.API.Controllers.V1
             return HandleResult(result);
         }
     }
-} 
+}
