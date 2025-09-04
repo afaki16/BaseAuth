@@ -175,7 +175,7 @@ namespace BaseAuth.API.Controllers
         /// <returns>Current user details</returns>
         [HttpGet("me")]
         [Authorize]
-        [ProducesResponseType(typeof(Application.DTOs.UserDto), 200)]
+        [ProducesResponseType(typeof(Application.DTOs.UserListDto), 200)]
         [ProducesResponseType(401)]
         public async Task<IActionResult> GetCurrentUser()
         {

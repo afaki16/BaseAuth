@@ -1,5 +1,6 @@
 using BaseAuth.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BaseAuth.Application.Interfaces
@@ -14,5 +15,6 @@ namespace BaseAuth.Application.Interfaces
         Task<UserRole> GetUserRoleAsync(int userId, int roleId);
         Task AddUserRoleAsync(UserRole userRole);
         void RemoveUserRole(UserRole userRole);
+        Task<IEnumerable<User>> GetUsersWithRolesAsync(int page, int pageSize, string searchTerm = null);
     }
 } 

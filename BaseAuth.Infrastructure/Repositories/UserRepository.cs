@@ -61,5 +61,24 @@ namespace BaseAuth.Infrastructure.Repositories
         {
             _context.UserRoles.Remove(userRole);
         }
+
+        public async Task<IEnumerable<User>> GetUsersWithRolesAsync(int page, int pageSize, string searchTerm = null)
+        {
+            var query = _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var searchTermLower = searchTerm.ToLower();
+                query = query.Where(u => 
+                    u.FirstName.ToLower().Contains(searchTermLower) ||
+                    u.LastName.ToLower().Contains(searchTermLower) ||
+                    u.Email.ToLower().Contains(searchTermLower));
+            }
+
+            return await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 } 

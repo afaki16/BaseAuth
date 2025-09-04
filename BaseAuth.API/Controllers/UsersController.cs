@@ -27,7 +27,7 @@ namespace BaseAuth.API.Controllers
         /// <returns>List of users</returns>
         [HttpGet]
         [Authorize(Policy = "users.read")]
-        [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<UserListDto>), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -51,7 +51,7 @@ namespace BaseAuth.API.Controllers
         /// <returns>User details</returns>
         [HttpGet("{id:int}")]
         [Authorize(Policy = "users.read")]
-        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(typeof(UserListDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]

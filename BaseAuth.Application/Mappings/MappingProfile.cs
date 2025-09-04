@@ -19,6 +19,10 @@ namespace BaseAuth.Application.Mappings
                 .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => 
                     src.UserRoles.SelectMany(ur => ur.Role.RolePermissions.Select(rp => rp.Permission)).Distinct()));
 
+            // User list mapping (without permissions for performance)
+            CreateMap<User, UserListDto>()
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role)));
+
             CreateMap<CreateUserCommand, User>()
                 .ForMember(dest => dest.UserRoles, opt => opt.Ignore());
 
