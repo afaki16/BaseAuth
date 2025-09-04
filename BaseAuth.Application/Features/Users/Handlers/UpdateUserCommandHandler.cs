@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BaseAuth.Application.Features.Users.Handlers
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<Application.DTOs.UserDto>>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result<Application.DTOs.UserListDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,17 +22,17 @@ namespace BaseAuth.Application.Features.Users.Handlers
             _mapper = mapper;
         }
 
-        public async Task<Result<UserDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<UserListDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.GetUserWithRolesAsync(request.Id);
 
             if (user == null)
-                return Result.Failure<UserDto>("User not found");
+                return Result.Failure<UserListDto>("User not found");
 
             // Check if email already exists for another user
             var existingUser = await _unitOfWork.Users.GetByEmailAsync(request.Email);
             if (existingUser != null && existingUser.Id != request.Id)
-                return Result.Failure<UserDto>("Email already exists");
+                return Result.Failure<UserListDto>("Email already exists");
 
             // Update user properties
             user.FirstName = request.FirstName;
@@ -71,7 +71,9 @@ namespace BaseAuth.Application.Features.Users.Handlers
             }
             await _unitOfWork.SaveChangesAsync();
 
-            var userDto = _mapper.Map<UserDto>(user);
+            // Reload user with roles to get complete data for mapping
+            _ = await _unitOfWork.Users.GetUserWithRolesAsync(user.Id);
+            var userDto = _mapper.Map<UserListDto>(userWithRoles);
             return Result.Success(userDto);
         }
     }

@@ -70,7 +70,7 @@ namespace BaseAuth.API.Controllers
         /// <returns>Created user</returns>
         [HttpPost]
         [Authorize(Policy = "users.create")]
-        [ProducesResponseType(typeof(UserDto), 201)]
+        [ProducesResponseType(typeof(UserListDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]
@@ -103,7 +103,7 @@ namespace BaseAuth.API.Controllers
         /// <returns>Updated user</returns>
         [HttpPut("{id:int}")]
         [Authorize(Policy = "users.update")]
-        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(typeof(UserListDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(403)]

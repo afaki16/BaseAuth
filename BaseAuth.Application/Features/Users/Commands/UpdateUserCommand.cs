@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BaseAuth.Application.Features.Users.Commands
 {
-    public class UpdateUserCommand : IRequest<Result<UserDto>>
+    public class UpdateUserCommand : IRequest<Result<UserListDto>>
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

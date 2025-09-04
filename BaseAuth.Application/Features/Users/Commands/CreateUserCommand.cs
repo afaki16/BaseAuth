@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BaseAuth.Application.Features.Users.Commands
 {
-    public class CreateUserCommand : IRequest<Result<UserDto>>
+    public class CreateUserCommand : IRequest<Result<UserListDto>>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

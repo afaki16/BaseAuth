@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BaseAuth.Application.Features.Users.Handlers
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Application.DTOs.UserDto>>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Result<Application.DTOs.UserListDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
@@ -24,16 +24,16 @@ namespace BaseAuth.Application.Features.Users.Handlers
             _mapper = mapper;
         }
 
-        public async Task<Result<Application.DTOs.UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Application.DTOs.UserListDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             // Check if email already exists
             if (await _unitOfWork.Users.EmailExistsAsync(request.Email))
-                return Result.Failure<Application.DTOs.UserDto>("Email already exists");
+                return Result.Failure<Application.DTOs.UserListDto>("Email already exists");
 
             // Hash password
             var passwordResult = _passwordService.HashPassword(request.Password);
             if (!passwordResult.IsSuccess)
-                return Result.Failure<Application.DTOs.UserDto>(passwordResult.Error);
+                return Result.Failure<Application.DTOs.UserListDto>(passwordResult.Error);
 
             // Create user
             var user = new User
@@ -65,7 +65,9 @@ namespace BaseAuth.Application.Features.Users.Handlers
                 await _unitOfWork.SaveChangesAsync();
             }
 
-            var userDto = _mapper.Map<Application.DTOs.UserDto>(user);
+            // Reload user with roles to get complete data for mapping
+            var userWithRoles = await _unitOfWork.Users.GetUserWithRolesAsync(user.Id);
+            var userDto = _mapper.Map<Application.DTOs.UserListDto>(userWithRoles);
             return Result.Success(userDto);
         }
     }
